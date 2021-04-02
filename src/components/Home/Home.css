@@ -1,0 +1,9 @@
+.jumbotron {
+    margin-top: 6.5%;
+    box-shadow: none;
+    background-color: transparent;
+}
+
+.landing-btn {
+    display: inline-block;
+}

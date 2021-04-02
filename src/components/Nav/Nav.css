@@ -1,0 +1,16 @@
+.navbar-custom {
+    padding: 1% 10%;
+    box-shadow: none;
+}
+
+.navbar-brand {
+    color: black !important;
+}
+
+.nav-item-custom {
+    margin-right: 5%;
+}
+
+.nav-item-text {
+    color: black !important;
+}

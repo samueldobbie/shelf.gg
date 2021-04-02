@@ -1,0 +1,33 @@
+
+.message-font {
+    font-size: 100px;
+    font-weight: bold;
+}
+  
+@media (min-width: 576px) {
+    .message-font {
+      font-size: 100px;
+      font-weight: bold;
+    }
+}
+  
+@media (min-width: 768px) {
+    .message-font {
+      font-size: 150px;
+      font-weight: bold;
+    }
+}
+  
+@media (min-width: 992px) {
+    .message-font {
+      font-size: 200px;
+      font-weight: bold;
+    }
+}
+
+@media (min-width: 1200px) { 
+   .message-font {
+      font-size: 280px;
+      font-weight: bold;
+    }
+}
