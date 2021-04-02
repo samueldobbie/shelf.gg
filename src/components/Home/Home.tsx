@@ -3,6 +3,7 @@ import {
   MDBCardText,
   MDBCardTitle, MDBJumbotron, MDBLink
 } from 'mdbreact'
+import GitHubButton from 'react-github-btn'
 
 import Endpoint from '@shelf/helpers/Endpoint'
 import './Home.css'
@@ -27,6 +28,15 @@ function Home() {
             explore
           </MDBLink>
         </div>
+        <br/>
+        <GitHubButton
+          href="https://github.com/samueldobbie/shelf.gg"
+          data-size="large"
+          data-show-count="true"
+          aria-label="Star samueldobbie/shelf.gg on GitHub"
+        >
+          Star
+        </GitHubButton>
       </MDBCardBody>
     </MDBJumbotron>
   )

@@ -26,7 +26,7 @@ function Nav() {
             <strong className="font-weight-bold navbar-brand">shelf.gg</strong>
           </MDBNavLink>
         </MDBNavbarBrand>
-        <MDBNavbarToggler onClick={toggleCollapse} />
+        <MDBNavbarToggler onClick={toggleCollapse} className="navbar-toggler-custom" />
         <MDBCollapse id="navbarCollapse3" isOpen={isOpen} navbar>
           <MDBNavbarNav right>
             <MDBNavItem className="nav-item-custom">

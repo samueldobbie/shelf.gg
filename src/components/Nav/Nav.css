@@ -14,3 +14,8 @@
 .nav-item-text {
     color: black !important;
 }
+
+.navbar-toggler-custom {
+    color: black !important;
+    background-color: black;
+}
