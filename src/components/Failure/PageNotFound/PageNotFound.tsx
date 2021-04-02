@@ -1,9 +1,15 @@
+import { useEffect } from 'react'
 import { MDBLink } from 'mdbreact'
 
 import Endpoint from '@shelf/helpers/Endpoint'
+import Title from '@shelf/helpers/Title'
 import './PageNotFound.css'
 
 function PageNotFound() {
+  useEffect(() => {
+    document.title = Title.PageNotFound
+  })
+
   return (
   	<div className="container-fluid">
   		<div className="col-md-6 offset-md-3 text-center mt-5 pt-5">

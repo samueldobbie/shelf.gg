@@ -3,13 +3,19 @@ import {
   MDBCardText,
   MDBCardTitle, MDBJumbotron, MDBLink
 } from 'mdbreact'
+import { useEffect } from 'react'
 import GitHubButton from 'react-github-btn'
 
 import Endpoint from '@shelf/helpers/Endpoint'
+import Title from '@shelf/helpers/Title'
 import './Home.css'
 
 function Home() {
-  return (    
+  useEffect(() => {
+    document.title = Title.Home
+  })
+
+  return (
     <MDBJumbotron className="text-center">
       <MDBCardBody>
         <MDBCardTitle className="h1">
