@@ -15,7 +15,7 @@ import Explore from '@shelf/components/Explore/Explore'
 import PageNotFound from '@shelf/components/Failure/PageNotFound/PageNotFound'
 import './App.css'
 
-function App() {
+function App(): JSX.Element {
   return (
     <Router>
       <Nav/>

@@ -1,29 +1,46 @@
-import { useEffect } from 'react'
+import { useEffect, useState } from 'react'
 
 import Title from '@shelf/helpers/Title'
 import Endpoint from '@shelf/helpers/Endpoint'
 import './Shelf.css'
 
-function Shelf() {
+function Shelf(): JSX.Element {
+  const [title, setTitle] = useState('')
+  const [creator, setCreator] = useState('')
+  const [resources, setResources] = useState([])
+
   useEffect(() => {
     document.title = Title.Shelf
     
-    const parameters = window.location.href.split("/s/")
+    const parameters = window.location.href.split('/s/')
     
     if (parameters.length <= 1) {
       window.location.href = Endpoint.PageNotFound
     }
 
     const id = parameters[1]
+    const url = 'http://localhost:5000/api/v1/shelf/' + id
+    
+    fetch(url)
+      .then(response => response.json())
+      .then(data => {
+        if (data.statusCode === 200) {
+          const shelf = JSON.parse(data.message)
 
-    // <Redirect from={Endpoint.Any} to={Endpoint.Shelf} />
+          setTitle(shelf['title'])
+          setCreator(shelf['creator'])
+          setResources(shelf['resources'])
+        } else {
+          window.location.href = Endpoint.PageNotFound
+        }
+      })
   })
 
   return (
     <>
       <div className="text-center">
-        <h1>untitled</h1>
-        <h4>created by anonymous</h4>
+        <h1>{ title }</h1>
+        <h4>created by { creator }</h4>
         <h4>0 views</h4>
       </div>
 

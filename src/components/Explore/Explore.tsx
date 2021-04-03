@@ -3,7 +3,7 @@ import { useEffect } from 'react'
 import Title from '@shelf/helpers/Title'
 import './Explore.css'
 
-function Explore() {
+function Explore(): JSX.Element {
   useEffect(() => {
     document.title = Title.Explore
   })

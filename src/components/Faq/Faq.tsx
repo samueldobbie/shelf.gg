@@ -4,7 +4,7 @@ import { useEffect } from 'react'
 import Title from '@shelf/helpers/Title'
 import './Faq.css'
 
-function Faq() {
+function Faq(): JSX.Element {
   useEffect(() => {
     document.title = Title.Faq
   })

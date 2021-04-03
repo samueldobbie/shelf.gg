@@ -5,7 +5,7 @@ import Endpoint from '@shelf/helpers/Endpoint'
 import Title from '@shelf/helpers/Title'
 import './PageNotFound.css'
 
-function PageNotFound() {
+function PageNotFound(): JSX.Element {
   useEffect(() => {
     document.title = Title.PageNotFound
   })

@@ -12,7 +12,7 @@ import {
 import Endpoint from '@shelf/helpers/Endpoint'
 import './Nav.css'
 
-function Nav() {
+function Nav(): JSX.Element {
   const [isOpen, setIsOpen] = useState(false)
 
   const toggleCollapse = () => {

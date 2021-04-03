@@ -1,10 +1,10 @@
 import { MDBContainer, MDBRow, MDBCol, MDBLink, MDBAlert } from 'mdbreact'
-import React, { useEffect, useState } from 'react'
+import { useEffect, useState } from 'react'
 
 import Title from '@shelf/helpers/Title'
 import './Build.css'
 
-function Build() {
+function Build(): JSX.Element {
   const [error, setError] = useState('')
 
   useEffect(() => {
@@ -25,7 +25,7 @@ function Build() {
       body: JSON.stringify({
         'title': title.value,
         'creator': creator.value,
-        'resources': resources.value,
+        'resources': resources.value.split('\n'),
       }),
     })
       .then(response => response.json())

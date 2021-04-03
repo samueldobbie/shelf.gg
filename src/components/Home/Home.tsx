@@ -10,7 +10,7 @@ import Endpoint from '@shelf/helpers/Endpoint'
 import Title from '@shelf/helpers/Title'
 import './Home.css'
 
-function Home() {
+function Home(): JSX.Element {
   useEffect(() => {
     document.title = Title.Home
   })
