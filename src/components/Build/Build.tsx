@@ -10,18 +10,28 @@ function Build() {
   })
 
   const submitted = async () => {
-    const response = await fetch('h', {
+    const url = "http://localhost:5000/api/v1/shelf"
+    const title = document.getElementById("title") as HTMLInputElement
+    const creator = document.getElementById("creator") as HTMLInputElement
+    const resources = document.getElementById("resources") as HTMLInputElement
+    
+    fetch(url, {
       method: "POST",
       headers: {
-        'Content-Type': 'application/json',
+        "Content-Type": "application/json",
       },
       body: JSON.stringify({
-        'a': 'b',
-        'c': 'd',
-        'e': 'f',
+        "title": title.value,
+        "creator": creator.value,
+        "resources": resources.value,
       }),
     })
-    return response.json()
+      .then(response => response.json())
+      .then(data => {
+        if (data.statusCode === 200) {
+          window.location.href = "/s/" + data.message 
+        }
+      })
   }
 
   return (
