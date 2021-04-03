@@ -21,3 +21,7 @@ yarn-debug.log*
 yarn-error.log*
 
 .idea/
+
+# python
+.venv/
+__pycache__/
