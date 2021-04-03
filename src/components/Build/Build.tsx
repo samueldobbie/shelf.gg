@@ -52,13 +52,13 @@ function Build(): JSX.Element {
             <label htmlFor="title" className="grey-text">
               title
             </label>
-            <input type="text" id="title" className="form-control" defaultValue="untitled" autoComplete="off"/>
+            <input type="text" id="title" className="form-control" defaultValue="untitled" autoComplete="off" maxLength={100}/>
             <br/>
 
             <label htmlFor="creator" className="grey-text">
               creator
             </label>
-            <input type="text" id="creator" className="form-control" defaultValue="anonymous" autoComplete="off"/>
+            <input type="text" id="creator" className="form-control" defaultValue="anonymous" autoComplete="off"  maxLength={30}/>
             <br/>
 
             {/* <label htmlFor="description" className="grey-text">
@@ -68,7 +68,7 @@ function Build(): JSX.Element {
             <br/> */}
 
             <label htmlFor="resources" className="grey-text">
-              resource list
+              resource list (max 50)
             </label>
             <textarea id="resources" className="form-control" autoComplete="off" placeholder="single url per line" rows={7}/>
 

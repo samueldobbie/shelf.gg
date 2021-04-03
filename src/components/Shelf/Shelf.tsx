@@ -1,23 +1,25 @@
 import { useEffect, useState } from 'react'
 
-import Title from '@shelf/helpers/Title'
+import { buildTitle } from '@shelf/helpers/Title'
 import Endpoint from '@shelf/helpers/Endpoint'
 import './Shelf.css'
 
 function Shelf(): JSX.Element {
+  const [rendered, setRendered] = useState(false)
   const [title, setTitle] = useState('')
   const [creator, setCreator] = useState('')
+  const [views, setViews] = useState(0)
   const [resources, setResources] = useState([])
 
   useEffect(() => {
-    document.title = Title.Shelf
-    
+    if (rendered) return;
+
     const parameters = window.location.href.split('/s/')
     
     if (parameters.length <= 1) {
       window.location.href = Endpoint.PageNotFound
     }
-
+    
     const id = parameters[1]
     const url = 'http://localhost:5000/api/v1/shelf/' + id
     
@@ -27,8 +29,12 @@ function Shelf(): JSX.Element {
         if (data.statusCode === 200) {
           const shelf = JSON.parse(data.message)
 
+          document.title = buildTitle(shelf['title'])
+
+          setRendered(true)
           setTitle(shelf['title'])
           setCreator(shelf['creator'])
+          setViews(shelf['views'])
           setResources(shelf['resources'])
         } else {
           window.location.href = Endpoint.PageNotFound
@@ -41,7 +47,7 @@ function Shelf(): JSX.Element {
       <div className="text-center">
         <h1>{ title }</h1>
         <h4>created by { creator }</h4>
-        <h4>0 views</h4>
+        <h4>{ views } views</h4>
       </div>
 
       <div className="bookshelf">

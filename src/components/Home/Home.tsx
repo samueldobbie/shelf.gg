@@ -23,7 +23,8 @@ function Home(): JSX.Element {
         </MDBCardTitle>
         <br/>
         <MDBCardText>
-          find and share useful resources
+          create, share, and find shelves of resources
+          {/* find and share useful resources */}
         </MDBCardText>
         <br/>
         <div className="pt-2">
