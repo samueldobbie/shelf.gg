@@ -15,13 +15,16 @@ def create_shelf():
     try:
         data = parse_shelf_data(request.json)
         shelf_id = mongo.db.shelf.insert(data)
-        message = "xyz"
+        message = str(shelf_id)
         status_code = 200
     except Exception as e:
         message = str(e)
         status_code = 400
 
-    return message, status_code
+    return jsonify({
+        "message": message,
+        "statusCode": status_code,
+    })
 
 def parse_shelf_data(json_data):
     title = json_data["title"]
@@ -29,10 +32,10 @@ def parse_shelf_data(json_data):
     resources = json_data["resources"]
     
     if profanity.contains_profanity(title):
-        raise Exception("Title cannot contain profanity")
+        raise Exception("Title field cannot contain profanity (determined by https://pypi.org/project/better-profanity/)")
 
     if profanity.contains_profanity(creator):
-        raise Exception("Creator cannot contain profanity")
+        raise Exception("Creator field cannot contain profanity (determined by https://pypi.org/project/better-profanity/)")
 
     # TODO validate resource list
 

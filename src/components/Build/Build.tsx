@@ -1,41 +1,51 @@
-import { MDBContainer, MDBRow, MDBCol, MDBLink } from 'mdbreact'
-import { useEffect } from 'react'
+import { MDBContainer, MDBRow, MDBCol, MDBLink, MDBAlert } from 'mdbreact'
+import React, { useEffect, useState } from 'react'
 
 import Title from '@shelf/helpers/Title'
 import './Build.css'
 
 function Build() {
+  const [error, setError] = useState('')
+
   useEffect(() => {
     document.title = Title.Build
   })
 
   const submitted = async () => {
-    const url = "http://localhost:5000/api/v1/shelf"
-    const title = document.getElementById("title") as HTMLInputElement
-    const creator = document.getElementById("creator") as HTMLInputElement
-    const resources = document.getElementById("resources") as HTMLInputElement
+    const url = 'http://localhost:5000/api/v1/shelf'
+    const title = document.getElementById('title') as HTMLInputElement
+    const creator = document.getElementById('creator') as HTMLInputElement
+    const resources = document.getElementById('resources') as HTMLInputElement
     
     fetch(url, {
-      method: "POST",
+      method: 'POST',
       headers: {
-        "Content-Type": "application/json",
+        'Content-Type': 'application/json',
       },
       body: JSON.stringify({
-        "title": title.value,
-        "creator": creator.value,
-        "resources": resources.value,
+        'title': title.value,
+        'creator': creator.value,
+        'resources': resources.value,
       }),
     })
       .then(response => response.json())
       .then(data => {
         if (data.statusCode === 200) {
-          window.location.href = "/s/" + data.message 
+          window.location.href = '/s/' + data.message
+        } else {
+          setError(data.message)
         }
       })
   }
 
   return (
     <MDBContainer>
+      {error &&
+        <MDBAlert color="danger" >
+          {error}
+        </MDBAlert>
+      }
+      
       <MDBRow>
         <MDBCol>
           <form>
