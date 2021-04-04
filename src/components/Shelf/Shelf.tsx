@@ -7,7 +7,6 @@ import './Shelf.css'
 function Shelf(): JSX.Element {
   const [title, setTitle] = useState('')
   const [creator, setCreator] = useState('')
-  const [coverImage, setCoverImage] = useState('')
   const [views, setViews] = useState(0)
   const [resources, setResources] = useState([])
 
@@ -32,7 +31,6 @@ function Shelf(): JSX.Element {
           setTitle(shelf['title'])
           setCreator(shelf['creator'])
           setViews(shelf['views'])
-          setCoverImage(shelf['coverImage'])
           setResources(shelf['resources'])
         } else {
           window.location.href = Endpoint.PageNotFound
@@ -52,12 +50,12 @@ function Shelf(): JSX.Element {
         <div className="book-grid">
           <ul>
             {resources.map((value) => {
-              const base64Image = JSON.parse(coverImage)["$binary"]
-              const coverImageSrc = "data:image/png;base64," + atob(base64Image)
+              const base64Image = JSON.parse(value["image"])
+              const coverImageSrc = "data:image/png;base64," + atob(base64Image["$binary"])
 
               return (
-                <li key={base64Image.slice(0, 10)}>
-                  <a href={ value } target="_blank" rel="noreferrer">
+                <li key={ value["url"] }>
+                  <a href={ value["url"] } target="_blank" rel="noreferrer">
                     <img src={ coverImageSrc } alt="" />
                   </a>
                 </li>
