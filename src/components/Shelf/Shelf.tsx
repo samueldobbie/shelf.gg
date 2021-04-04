@@ -5,15 +5,12 @@ import Endpoint from '@shelf/helpers/Endpoint'
 import './Shelf.css'
 
 function Shelf(): JSX.Element {
-  const [rendered, setRendered] = useState(false)
   const [title, setTitle] = useState('')
   const [creator, setCreator] = useState('')
   const [views, setViews] = useState(0)
   const [resources, setResources] = useState([])
 
   useEffect(() => {
-    if (rendered) return;
-
     const parameters = window.location.href.split('/s/')
     
     if (parameters.length <= 1) {
@@ -31,7 +28,6 @@ function Shelf(): JSX.Element {
 
           document.title = buildTitle(shelf['title'])
 
-          setRendered(true)
           setTitle(shelf['title'])
           setCreator(shelf['creator'])
           setViews(shelf['views'])
@@ -40,7 +36,7 @@ function Shelf(): JSX.Element {
           window.location.href = Endpoint.PageNotFound
         }
       })
-  })
+  }, [])
 
   return (
     <>

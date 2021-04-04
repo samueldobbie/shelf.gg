@@ -1,12 +1,15 @@
 from flask import Flask, request, jsonify
-from flask_pymongo import PyMongo
-from better_profanity import profanity
 from flask_cors import CORS
+from flask_pymongo import PyMongo
+
+from better_profanity import profanity
+from bson.json_util import dumps
 from route import Route
 
 import validators
 import base64
 import json
+import time
 import os
 
 app = Flask(__name__)
@@ -58,10 +61,11 @@ def _parse_shelf_data(json_data):
 
     return {
         "_id": _generate_id(),
+        "created": time.time(),
         "title": title[:MAX_TITLE_LENGTH],
         "creator": creator[:MAX_CREATOR_LENGTH],
         "resources": resources[:MAX_RESOURCE_LENGTH],
-        "views": 0,
+        "views": 1,
     }
 
 def _generate_id():
@@ -72,6 +76,28 @@ def find_shelf(shelf_id):
     try:
         shelf = mongo.db.shelf.find_one_and_update({"_id": shelf_id}, {"$inc": {"views": 1}}, upsert = True)
         message = json.dumps(shelf)
+        status_code = 200
+    except Exception as e:
+        message = str(e)
+        status_code = 404
+
+    return jsonify({
+        "message": message,
+        "statusCode": status_code,
+    })
+
+
+@app.route(Route.FIND_SHELVES, methods=["GET"])
+def find_shelves(list_type):
+    try:
+        if list_type == "popular":
+            shelves = mongo.db.shelf.find().sort("views", -1).limit(50)
+        elif list_type == "recent":
+            shelves = mongo.db.shelf.find().sort("created", -1).limit(50)
+        else:
+            raise Exception("Invalid table type")
+
+        message = dumps(shelves)
         status_code = 200
     except Exception as e:
         message = str(e)
