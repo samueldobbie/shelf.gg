@@ -7,6 +7,7 @@ import './Shelf.css'
 function Shelf(): JSX.Element {
   const [title, setTitle] = useState('')
   const [creator, setCreator] = useState('')
+  const [coverImage, setCoverImage] = useState('')
   const [views, setViews] = useState(0)
   const [resources, setResources] = useState([])
 
@@ -31,6 +32,7 @@ function Shelf(): JSX.Element {
           setTitle(shelf['title'])
           setCreator(shelf['creator'])
           setViews(shelf['views'])
+          setCoverImage(shelf['coverImage'])
           setResources(shelf['resources'])
         } else {
           window.location.href = Endpoint.PageNotFound
@@ -49,32 +51,18 @@ function Shelf(): JSX.Element {
       <div className="bookshelf">
         <div className="book-grid">
           <ul>
-            <li>
-              <img alt="" src="https://images-na.ssl-images-amazon.com/images/I/51uLvJlKpNL._SX321_BO1,204,203,200_.jpg"/>
-            </li>
-            <li>
-              <img alt="" src="https://damonza.com/wp-content/uploads/portfolio/fiction/The-prophecy_03.jpg"/>
-            </li>
-            <li>
-              <img alt="" src="https://i.pinimg.com/564x/f7/c8/12/f7c812c9b0296cd9f119e33a06d9a256.jpg"/>
-            </li>
-          </ul>
-        </div>
-        <div className="shelf-shadows"></div>
-        <div className="shelf"></div>
-      </div>
-      <div className="bookshelf">
-        <div className="book-grid">
-          <ul>
-            <li>
-              <img alt="" src="https://images.penguinrandomhouse.com/cover/9781101931288"/>
-            </li>
-            <li>
-              <img alt="" src="https://i.harperapps.com/covers/9780062698162/x510.jpg"/>
-            </li>
-            <li>
-              <img alt="" src="https://www.canva.com/learn/wp-content/uploads/2015/03/draculabramstoker-tb-800x0.jpg"/>
-            </li>
+            {resources.map((value) => {
+              const base64Image = JSON.parse(coverImage)["$binary"]
+              const coverImageSrc = "data:image/png;base64," + atob(base64Image)
+
+              return (
+                <li key={base64Image.slice(0, 10)}>
+                  <a href={ value } target="_blank" rel="noreferrer">
+                    <img src={ coverImageSrc } alt="" />
+                  </a>
+                </li>
+              )
+            })}
           </ul>
         </div>
         <div className="shelf-shadows"></div>

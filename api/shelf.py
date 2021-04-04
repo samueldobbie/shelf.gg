@@ -4,6 +4,7 @@ from flask_pymongo import PyMongo
 
 from better_profanity import profanity
 from bson.json_util import dumps
+from bookcover import draw
 from route import Route
 
 import validators
@@ -34,8 +35,9 @@ def create_shelf():
     })
 
 def _parse_shelf_data(json_data):
-    title = json_data["title"].strip()
-    creator = json_data["creator"].strip()
+    shelf_id = _generate_id()
+    title = json_data["title"].strip().lower()
+    creator = json_data["creator"].strip().lower()
     resources = []
     
     if profanity.contains_profanity(title):
@@ -45,7 +47,7 @@ def _parse_shelf_data(json_data):
         raise Exception("Creator field cannot contain profanity (categorized by https://pypi.org/project/better-profanity/)")
 
     for resource_url in json_data["resources"]:
-        resource_url = resource_url.strip()
+        resource_url = resource_url.strip().lower()
 
         if validators.url(resource_url):
             resources.append(resource_url)
@@ -59,17 +61,33 @@ def _parse_shelf_data(json_data):
     if len(resources) == 0:
         raise Exception("At least one valid URL is required in the resource list")
 
+    encoded_cover_image = get_encoded_cover_image(title, creator, shelf_id)
+
     return {
-        "_id": _generate_id(),
+        "_id": shelf_id,
         "created": time.time(),
         "title": title[:MAX_TITLE_LENGTH],
         "creator": creator[:MAX_CREATOR_LENGTH],
         "resources": resources[:MAX_RESOURCE_LENGTH],
+        "coverImage": encoded_cover_image,
         "views": 1,
     }
 
 def _generate_id():
     return base64.b64encode(os.urandom(32))[:8].decode("utf-8")
+
+# TODO encode without saving locally
+def get_encoded_cover_image(title, creator, shelf_id):
+    filename = shelf_id + ".jpg"
+
+    draw(title, title, creator).save(filename)
+
+    with open(filename, "rb") as f:
+        encoded_image = base64.b64encode(f.read())
+    
+    # os.remove(filename)
+    
+    return dumps(encoded_image)
 
 @app.route(Route.FIND_SHELF, methods=["GET"])
 def find_shelf(shelf_id):
@@ -91,9 +109,9 @@ def find_shelf(shelf_id):
 def find_shelves(list_type):
     try:
         if list_type == "popular":
-            shelves = mongo.db.shelf.find().sort("views", -1).limit(50)
+            shelves = mongo.db.shelf.find().sort("views", -1).limit(TABLE_LIMIT)
         elif list_type == "recent":
-            shelves = mongo.db.shelf.find().sort("created", -1).limit(50)
+            shelves = mongo.db.shelf.find().sort("created", -1).limit(TABLE_LIMIT)
         else:
             raise Exception("Invalid table type")
 
@@ -108,6 +126,7 @@ def find_shelves(list_type):
         "statusCode": status_code,
     })
 
+TABLE_LIMIT = 25
 MAX_TITLE_LENGTH = 100
 MAX_CREATOR_LENGTH = 30
 MAX_RESOURCE_LENGTH = 50

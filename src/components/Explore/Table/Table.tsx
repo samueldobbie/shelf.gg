@@ -14,13 +14,14 @@ function Table(props: any): JSX.Element {
       .then(data => {
         if (data.statusCode === 200) {
           const shelves = JSON.parse(data.message)
-
-          console.log(shelves)
-          
           setItems(shelves)
         }
       })
   }, [props.listType])
+
+  function redirectToShelf(shelfId: string): void {
+    window.location.href = '/s/' + shelfId
+  }
 
   return (
     <MDBTable hover className="table-custom">
@@ -34,11 +35,13 @@ function Table(props: any): JSX.Element {
       </MDBTableHead>
       <MDBTableBody>
         {items.map((value) => {
+          const date = getDate(value['created'])
+
           return (
-            <tr>
-              <td>{ value['createdDate'] }</td>
+            <tr className="table-row-custom" onClick={() => redirectToShelf(value['_id'])}>
+              <td>{ date }</td>
               <td>{ value['title'] }</td>
-              <td>{ value['itemCount'] }</td>
+              <td>{ value['views'] }</td>
               <td>{ value['views'] }</td>
             </tr>
           )
@@ -46,6 +49,17 @@ function Table(props: any): JSX.Element {
       </MDBTableBody>
     </MDBTable>
   )
+}
+
+function getDate(epoch: number): string {
+  const date = new Date(0)
+  date.setUTCSeconds(epoch)
+
+  const day = new Intl.DateTimeFormat('en', { day: '2-digit' }).format(date)
+  const month = new Intl.DateTimeFormat('en', { month: 'short' }).format(date)
+  const year = new Intl.DateTimeFormat('en', { year: '2-digit' }).format(date)
+
+  return `${day}-${month}-${year}`.toLowerCase()
 }
 
 export default Table

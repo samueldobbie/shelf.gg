@@ -39,7 +39,7 @@ function Build(): JSX.Element {
   }
 
   return (
-    <MDBContainer>
+    <MDBContainer className="build-container">
       {error &&
         <MDBAlert color="danger" >
           {error}
@@ -60,12 +60,6 @@ function Build(): JSX.Element {
             </label>
             <input type="text" id="creator" className="form-control" defaultValue="anonymous" autoComplete="off"  maxLength={30}/>
             <br/>
-
-            {/* <label htmlFor="description" className="grey-text">
-              Description (optional)
-            </label>
-            <textarea id="description" className="form-control" />
-            <br/> */}
 
             <label htmlFor="resources" className="grey-text">
               resource list (max 50)

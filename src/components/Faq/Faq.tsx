@@ -15,7 +15,7 @@ function Faq(): JSX.Element {
         <MDBCol className="faq-column">
           <FaqItem
             question="What are shelves?"
-            answer="Shelves are collections of related resources, which are used to centralize and share content."
+            answer="Shelves are collections of related resources that make it easy to group and share content."
           />
 
           <FaqItem
@@ -25,7 +25,7 @@ function Faq(): JSX.Element {
 
           <FaqItem
             question="What type of resources can I add to a shelf?"
-            answer="At the moment just links to websites. You'll be able to upload graphics and docs in the future."
+            answer="At the moment you can only add URLs. In the future you'll be able to upload local graphics and docs."
           />
 
           <FaqItem
@@ -40,9 +40,9 @@ function Faq(): JSX.Element {
 
           <FaqItem
             question="Can I delete a shelf?"
-            answer="Not yet, so double-check your shelves before publishing them. If you accidently include something that doesn't belong in a shelf (e.g. your personal info) then send me a message and I'll do my best to sort it (sam@shelf.gg)."
+            answer="Not right now, so double-check your shelves before publishing them. If you accidently include something that doesn't belong in a shelf (e.g. your personal info) then send me a message and I'll do my best to sort it (sam@shelf.gg)."
           />
-          
+
           <FaqItem
             question="Can I report a shelf?"
             answer="Yes! If you see something that doesn't look right please let me know (sam@shelf.gg)."

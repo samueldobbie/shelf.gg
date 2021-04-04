@@ -1,4 +1,10 @@
 .table-container {
-    margin-top: 7.5%;
-    margin-bottom: 10%;
+    margin-top: 5%;
+    /* margin-top: 10%; */
+    /* margin-bottom: 15%; */
+    margin-bottom: 5%;
+}
+
+.table-header {
+    margin-bottom: 3%;
 }

@@ -25,3 +25,7 @@ yarn-error.log*
 # python
 .venv/
 __pycache__/
+
+# cover images
+*.jpg
+*.png
