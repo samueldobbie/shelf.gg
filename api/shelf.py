@@ -1,6 +1,6 @@
 from flask import Flask, request, jsonify
-from flask_cors import CORS
 from flask_pymongo import PyMongo
+from flask_cors import CORS
 
 from better_profanity import profanity
 from fake_useragent import UserAgent
@@ -114,9 +114,15 @@ def get_encoded_cover_image(title, subtitle, creator, filename):
     return dumps(encoded_image)
 
 @app.route(Route.FIND_SHELF, methods=["GET"])
-def find_shelf(shelf_id):
+def find_shelf(shelf_id, count_view):
+    count_view = count_view == "true"
+
     try:
-        shelf = mongo.db.shelf.find_one_and_update({"_id": shelf_id}, {"$inc": {"views": 1}}, upsert = True)
+        if count_view:
+            shelf = mongo.db.shelf.find_one_and_update({"_id": shelf_id}, {"$inc": {"views": 1}}, upsert = True)
+        else:
+            shelf = mongo.db.shelf.find_one({"_id": shelf_id})
+
         message = json.dumps(shelf)
         status_code = 200
     except Exception as e:

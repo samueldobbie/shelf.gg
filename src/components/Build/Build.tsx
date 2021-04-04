@@ -5,6 +5,7 @@ import Title from '@shelf/helpers/Title'
 import './Build.css'
 
 function Build(): JSX.Element {
+  const [load, setLoad] = useState(false)
   const [error, setError] = useState('')
 
   useEffect(() => {
@@ -12,6 +13,8 @@ function Build(): JSX.Element {
   })
 
   const submitted = async () => {
+    setLoad(true)
+
     const url = 'http://localhost:5000/api/v1/shelf'
     const title = document.getElementById('title') as HTMLInputElement
     const creator = document.getElementById('creator') as HTMLInputElement
@@ -36,6 +39,7 @@ function Build(): JSX.Element {
           setError(data.message)
         }
       })
+      .finally(() => setLoad(false))
   }
 
   return (
@@ -48,28 +52,37 @@ function Build(): JSX.Element {
       
       <MDBRow>
         <MDBCol>
-          <form>
-            <label htmlFor="title" className="grey-text">
-              title
-            </label>
-            <input type="text" id="title" className="form-control" defaultValue="untitled" autoComplete="off" maxLength={100}/>
-            <br/>
+          {load === false &&
+            <form>
+              <label htmlFor="title" className="grey-text">
+                title
+              </label>
+              <input type="text" id="title" className="form-control" defaultValue="untitled" autoComplete="off" maxLength={100}/>
+              <br/>
 
-            <label htmlFor="creator" className="grey-text">
-              creator
-            </label>
-            <input type="text" id="creator" className="form-control" defaultValue="anonymous" autoComplete="off"  maxLength={30}/>
-            <br/>
+              <label htmlFor="creator" className="grey-text">
+                creator
+              </label>
+              <input type="text" id="creator" className="form-control" defaultValue="anonymous" autoComplete="off"  maxLength={30}/>
+              <br/>
 
-            <label htmlFor="resources" className="grey-text">
-              resource list (max 50)
-            </label>
-            <textarea id="resources" className="form-control" autoComplete="off" placeholder="single url per line" rows={7}/>
+              <label htmlFor="resources" className="grey-text">
+                resource list (max 50)
+              </label>
+              <textarea id="resources" className="form-control" autoComplete="off" placeholder="single url per line" rows={7}/>
 
-            <MDBLink className="text-center mt-4" onClick={submitted}>
-              publish
-            </MDBLink>
-          </form>
+              <MDBLink className="text-center mt-4" onClick={submitted}>
+                publish
+              </MDBLink>
+            </form>
+          }
+
+          {load === true &&
+            <div className="text-center">
+              <div className="spinner-border" role="status"></div>
+              <p className="spinner-text">building shelf...</p>
+            </div>
+          }
         </MDBCol>
       </MDBRow>
     </MDBContainer>

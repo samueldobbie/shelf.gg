@@ -19,8 +19,6 @@ function Explore(): JSX.Element {
             <Table listType="popular"/>
           </div>
 
-          <hr/>
-
           <div className="table-container">
             <h3 className="table-header">most recent</h3>
             <Table listType="recent"/>

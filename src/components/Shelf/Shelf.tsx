@@ -16,9 +16,14 @@ function Shelf(): JSX.Element {
     if (parameters.length <= 1) {
       window.location.href = Endpoint.PageNotFound
     }
-    
+
     const id = parameters[1]
-    const url = 'http://localhost:5000/api/v1/shelf/' + id
+    const countView = hasViewedCookie() === false     
+    const url = `http://localhost:5000/api/v1/shelf/${id}/${countView}` 
+
+    if (countView) {
+      setViewedCookie(id)
+    }
     
     fetch(url)
       .then(response => response.json())
@@ -68,6 +73,16 @@ function Shelf(): JSX.Element {
       </div>
     </>
   )
+}
+
+function setViewedCookie(pathId: string) {
+  const date = new Date()
+  date.setTime(date.getTime() + (60 * 60 * 1000))
+  document.cookie = `viewedAt=${date.toUTCString()}; expires=${date.toUTCString()}; path=/s/${pathId}`
+}
+
+function hasViewedCookie() {
+  return document.cookie.indexOf('viewedAt=') !== -1
 }
 
 export default Shelf
