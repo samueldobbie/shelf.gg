@@ -7,6 +7,7 @@ from fake_useragent import UserAgent
 from bson.json_util import dumps
 from bs4 import BeautifulSoup
 from bookcover import draw
+from waitress import serve
 from route import Route
 
 import urllib.request
@@ -18,7 +19,7 @@ import time
 import os
 
 app = Flask(__name__)
-app.config["MONGO_URI"] = "mongodb://localhost:27017/loc"
+app.config["MONGO_URI"] = "mongodb://mongo:27017/loc"
 mongo = PyMongo(app)
 CORS(app)
 
@@ -53,7 +54,7 @@ def _parse_shelf_data(json_data):
     for resource_url in json_data["resources"]:
         resource_url = resource_url.strip().lower()
 
-        if validators.url(resource_url):
+        if resource_url not in resources and validators.url(resource_url):
             cover_creator = tldextract.extract(resource_url).domain
             cover_filename = shelf_id + ".jpg"
             cover_subtitle = ""
@@ -80,6 +81,9 @@ def _parse_shelf_data(json_data):
                 "image": resource_image,
             })
 
+        if len(resources) == MAX_RESOURCE_LENGTH:
+            break
+
     if title == "":
         title = "untitled"
 
@@ -96,7 +100,7 @@ def _parse_shelf_data(json_data):
         "title": title[:MAX_TITLE_LENGTH],
         "creator": creator[:MAX_CREATOR_LENGTH],
         "resources": resources[:MAX_RESOURCE_LENGTH],
-        "views": 1,
+        "views": 0,
     }
 
 def _generate_id():
@@ -162,3 +166,6 @@ MAX_CREATOR_LENGTH = 30
 MAX_RESOURCE_LENGTH = 50
 
 user_agent = UserAgent()
+
+if __name__ == "__main__":
+    serve(app, host="0.0.0.0", port=5000)

@@ -2,6 +2,7 @@ import { useEffect, useState } from 'react'
 
 import { buildTitle } from '@shelf/helpers/Title'
 import Endpoint from '@shelf/helpers/Endpoint'
+import Config from '@shelf/helpers/Config'
 import './Shelf.css'
 
 function Shelf(): JSX.Element {
@@ -19,7 +20,7 @@ function Shelf(): JSX.Element {
 
     const id = parameters[1]
     const countView = hasViewedCookie() === false     
-    const url = `http://localhost:5000/api/v1/shelf/${id}/${countView}` 
+    const url = `${Config.BaseApiUrl}/api/v1/shelf/${id}/${countView}` 
 
     if (countView) {
       setViewedCookie(id)

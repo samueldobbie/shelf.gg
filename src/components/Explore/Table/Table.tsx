@@ -1,13 +1,14 @@
 import { MDBTable, MDBTableHead, MDBTableBody } from 'mdbreact'
 import { useEffect, useState } from 'react'
 
+import Config from '@shelf/helpers/Config'
 import './Table.css'
 
 function Table(props: any): JSX.Element {
   const [items, setItems] = useState([])
 
   useEffect(() => {
-    const url = 'http://localhost:5000/api/v1/shelf/all/' + props.listType
+    const url = `${Config.BaseApiUrl}/api/v1/shelf/all/${props.listType}`
     
     fetch(url)
       .then(response => response.json())
@@ -29,19 +30,20 @@ function Table(props: any): JSX.Element {
         <tr>
           <th>created</th>
           <th>title</th>
-          <th>item count</th>
-          <th>view count</th>
+          <th># resources</th>
+          <th># views</th>
         </tr>
       </MDBTableHead>
       <MDBTableBody>
         {items.map((value) => {
           const date = getDate(value['created'])
+          const resources = value['resources'] as string[]
 
           return (
-            <tr className="table-row-custom" onClick={() => redirectToShelf(value['_id'])}>
+            <tr key={value['_id']} className="table-row-custom" onClick={() => redirectToShelf(value['_id'])}>
               <td>{ date }</td>
               <td>{ value['title'] }</td>
-              <td>{ value['views'] }</td>
+              <td>{ resources.length }</td>
               <td>{ value['views'] }</td>
             </tr>
           )

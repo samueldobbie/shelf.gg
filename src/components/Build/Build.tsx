@@ -2,6 +2,7 @@ import { MDBContainer, MDBRow, MDBCol, MDBLink, MDBAlert } from 'mdbreact'
 import { useEffect, useState } from 'react'
 
 import Title from '@shelf/helpers/Title'
+import Config from '@shelf/helpers/Config'
 import './Build.css'
 
 function Build(): JSX.Element {
@@ -15,7 +16,7 @@ function Build(): JSX.Element {
   const submitted = async () => {
     setLoad(true)
 
-    const url = 'http://localhost:5000/api/v1/shelf'
+    const url = `${Config.BaseApiUrl}/api/v1/shelf`
     const title = document.getElementById('title') as HTMLInputElement
     const creator = document.getElementById('creator') as HTMLInputElement
     const resources = document.getElementById('resources') as HTMLInputElement
