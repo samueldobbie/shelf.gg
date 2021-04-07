@@ -1,23 +1,24 @@
-version: "3.8"
+version: "3.7"
 services:
-  interface:
+  web:
     build: .
-    ports:
-      - 3000:3000
+    restart: always
     depends_on:
-      - api
-    links:
-      - api
-  api:
+      - backend
+    ports:
+      - "5000:5000"
+  backend:
     build: ./api
-    ports:
-      - 5000:5000
+    restart: always
     depends_on:
-      - mongo
-    links:
-      - mongo
-  mongo:
-    image: mongo:latest
-    container_name: "mongo"
+      - db
     ports:
-      - 27017:27017
+      - "5001:5001"
+  db:
+    image: mongo:latest
+    restart: always
+    container_name: "db"
+    volumes:
+      - ~/mongo/data:/data/db
+    ports:
+      - "27017:27017"

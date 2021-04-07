@@ -4,8 +4,12 @@ WORKDIR /usr/src/app
 
 COPY package*.json ./
 
-RUN yarn install
+RUN yarn install --only=production
 
 COPY . .
 
-CMD [ "yarn", "start" ]
+RUN yarn build
+
+RUN npm install -g serve
+
+CMD [ "serve", "-s", "build" ]

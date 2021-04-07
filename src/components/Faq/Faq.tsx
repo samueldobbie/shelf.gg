@@ -29,11 +29,6 @@ function Faq(): JSX.Element {
           />
 
           <FaqItem
-            question="Is it free?"
-            answer="Yep!"
-          />
-
-          <FaqItem
             question="Do I need an account?"
             answer="Nope!"
           />

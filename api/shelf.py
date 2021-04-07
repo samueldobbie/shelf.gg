@@ -19,7 +19,7 @@ import time
 import os
 
 app = Flask(__name__)
-app.config["MONGO_URI"] = "mongodb://mongo:27017/loc"
+app.config["MONGO_URI"] = "mongodb://db:27017/prd"
 mongo = PyMongo(app)
 CORS(app)
 
@@ -44,6 +44,7 @@ def _parse_shelf_data(json_data):
     title = json_data["title"].strip().lower()
     creator = json_data["creator"].strip().lower()
     resources = []
+    seen_resource_urls = set()
     
     if profanity.contains_profanity(title):
         raise Exception("Title field cannot contain profanity (categorized by https://pypi.org/project/better-profanity/)")
@@ -54,7 +55,7 @@ def _parse_shelf_data(json_data):
     for resource_url in json_data["resources"]:
         resource_url = resource_url.strip().lower()
 
-        if resource_url not in resources and validators.url(resource_url):
+        if resource_url != "" and validators.url(resource_url) and resource_url not in seen_resource_urls:
             cover_creator = tldextract.extract(resource_url).domain
             cover_filename = shelf_id + ".jpg"
             cover_subtitle = ""
@@ -75,6 +76,8 @@ def _parse_shelf_data(json_data):
                 creator=cover_creator,
                 filename=cover_filename,
             )
+
+            seen_resource_urls.add(resource_url)
 
             resources.append({
                 "url": resource_url,
@@ -108,14 +111,18 @@ def _generate_id():
 
 # TODO encode without saving locally
 def get_encoded_cover_image(title, subtitle, creator, filename):
-    draw(title, subtitle, creator).save(filename)
+    try:
+        draw(title, subtitle, creator).save(filename)
 
-    with open(filename, "rb") as f:
-        encoded_image = base64.b64encode(f.read())
+        with open(filename, "rb") as f:
+            encoded_image = base64.b64encode(f.read())
 
-    os.remove(os.getcwd() + "/" + filename)
-    
+        os.remove(os.getcwd() + "/" + filename)
+    except:
+        encoded_image = default_image
+
     return dumps(encoded_image)
+
 
 @app.route(Route.FIND_SHELF, methods=["GET"])
 def find_shelf(shelf_id, count_view):
@@ -166,6 +173,7 @@ MAX_CREATOR_LENGTH = 30
 MAX_RESOURCE_LENGTH = 50
 
 user_agent = UserAgent()
+default_image = open('default_image').read()
 
 if __name__ == "__main__":
-    serve(app, host="0.0.0.0", port=5000)
+    serve(app, host="0.0.0.0", port=5001)

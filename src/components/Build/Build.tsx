@@ -14,13 +14,14 @@ function Build(): JSX.Element {
   })
 
   const submitted = async () => {
+    setError('')
     setLoad(true)
 
     const url = `${Config.BaseApiUrl}/api/v1/shelf`
     const title = document.getElementById('title') as HTMLInputElement
     const creator = document.getElementById('creator') as HTMLInputElement
     const resources = document.getElementById('resources') as HTMLInputElement
-    
+
     fetch(url, {
       method: 'POST',
       headers: {

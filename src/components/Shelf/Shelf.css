@@ -1,8 +1,11 @@
 .bookshelf {
-    width: 60%;
+    width: 30%;
     margin: 5rem auto;
     text-align: center;
     position: relative;
+    display: inline-block;
+    width: 300px;
+    padding: 0 25px;
 }
 
 .book-grid {
@@ -16,7 +19,6 @@
     padding: 0;
     margin: 0;
     display: grid;
-    grid-template-columns: repeat(3, 1fr);
 }
 
 .book-grid ul li {
