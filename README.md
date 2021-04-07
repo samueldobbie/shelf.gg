@@ -1,6 +1,6 @@
 # shelf.gg
 
-![](example.jpg)
+![](example.png)
 
 An easy way to share and find resources.
 
