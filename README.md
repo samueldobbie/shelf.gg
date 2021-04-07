@@ -14,7 +14,7 @@ To setup locally, run `docker-compose up` in the root directory.
 
 ## Future
 
-- Search for / delete shelves
+- Search through shelves
 - Upload local docs (pdfs, images, etc.)
-- Set an expiry date
-- Set visibility (public / private)
+- Delete a shelf / set an expiry date
+- Set shelf visibility (public / private)
