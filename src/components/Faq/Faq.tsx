@@ -15,7 +15,7 @@ function Faq(): JSX.Element {
         <MDBCol className="faq-column">
           <FaqItem
             question="What are shelves?"
-            answer="Shelves are collections of related resources that make it easy to group and share content."
+            answer="Shelves are collections of related content that make it easy to share and find resources."
           />
 
           <FaqItem
@@ -25,7 +25,7 @@ function Faq(): JSX.Element {
 
           <FaqItem
             question="What type of resources can I add to a shelf?"
-            answer="At the moment you can only add URLs. In the future you'll be able to upload local graphics and docs."
+            answer="At the moment you can only add URLs. In the future you'll be able to upload local docs."
           />
 
           <FaqItem

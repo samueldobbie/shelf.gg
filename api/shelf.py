@@ -23,6 +23,7 @@ app.config["MONGO_URI"] = "mongodb://db:27017/prd"
 mongo = PyMongo(app)
 CORS(app)
 
+
 @app.route(Route.CREATE_SHELF, methods=["POST"])
 def create_shelf():
     try:
@@ -38,6 +39,7 @@ def create_shelf():
         "message": message,
         "statusCode": status_code,
     })
+
 
 def _parse_shelf_data(json_data):
     shelf_id = _generate_id()
@@ -96,7 +98,6 @@ def _parse_shelf_data(json_data):
     if len(resources) == 0:
         raise Exception("At least one valid URL is required in the resource list")
 
-
     return {
         "_id": shelf_id,
         "created": time.time(),
@@ -106,8 +107,12 @@ def _parse_shelf_data(json_data):
         "views": 0,
     }
 
+
 def _generate_id():
-    return base64.b64encode(os.urandom(32))[:8].decode("utf-8")
+    random_string = base64.b64encode(os.urandom(32))[:8].decode("utf-8")
+    cleaned_string = "".join(c for c in random_string if c.isalnum())
+    return cleaned_string
+
 
 # TODO encode without saving locally
 def get_encoded_cover_image(title, subtitle, creator, filename):
@@ -166,6 +171,7 @@ def find_shelves(list_type):
         "message": message,
         "statusCode": status_code,
     })
+
 
 TABLE_LIMIT = 25
 MAX_TITLE_LENGTH = 100
