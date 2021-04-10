@@ -35,7 +35,7 @@ function Faq(): JSX.Element {
 
           <FaqItem
             question="Can I delete a shelf?"
-            answer="Not right now, so double-check your shelves before publishing them. If you accidently include something that doesn't belong in a shelf (e.g. your personal info) then send me a message and I'll do my best to sort it (sam@shelf.gg)."
+            answer="Not right now, so be sure to double-check your shelves before publishing them!"
           />
 
           <FaqItem
