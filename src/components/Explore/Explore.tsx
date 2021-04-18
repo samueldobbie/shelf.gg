@@ -16,13 +16,7 @@ function Explore(): JSX.Element {
       <MDBRow>
         <MDBCol>
           <div className="table-container">
-            <h3 className="table-header">most popular</h3>
-            <Table listType="popular"/>
-          </div>
-
-          <div className="table-container">
-            <h3 className="table-header">most recent</h3>
-            <Table listType="recent"/>
+            <Table/>
           </div>
         </MDBCol>
       </MDBRow>

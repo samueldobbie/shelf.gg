@@ -136,9 +136,12 @@ def find_shelf(shelf_id, count_view):
 
     try:
         if count_view:
-            shelf = mongo.db.shelf.find_one_and_update({"_id": shelf_id}, {"$inc": {"views": 1}}, upsert = True)
+            shelf = mongo.db.shelf.find_one_and_update({"_id": shelf_id}, {"$inc": {"views": 1}}, upsert = False)
         else:
             shelf = mongo.db.shelf.find_one({"_id": shelf_id})
+
+        if shelf == None:
+            raise Exception("Invalid shelf id")
 
         message = json.dumps(shelf)
         status_code = 200
@@ -153,33 +156,35 @@ def find_shelf(shelf_id, count_view):
 
 
 @app.route(Route.FIND_SHELVES, methods=["GET"])
-def find_shelves(list_type):
+def find_shelves():
     try:
-        if list_type in explore_cache:
-            return explore_cache[list_type]
+        if EXPLORE_CACHE_KEY in explore_cache:
+            return explore_cache[EXPLORE_CACHE_KEY]
 
-        if list_type == "popular":
-            shelves = mongo.db.shelf.find().sort("views", -1).limit(TABLE_LIMIT)
-        elif list_type == "recent":
-            shelves = mongo.db.shelf.find().sort("created", -1).limit(TABLE_LIMIT)
-        else:
-            raise Exception("Invalid table type")
-
+        projection = {
+            "created": 1,
+            "views": 1,
+            "title": 1,
+            "resources_size": {
+                "$size": "$resources",
+            },
+        }
+        shelves = mongo.db.shelf.find({}, projection).limit(EXPLORE_TABLE_LIMIT)
         message = dumps(shelves)
         status_code = 200
     except Exception as e:
         message = str(e)
         status_code = 404
 
-    explore_cache[list_type] = jsonify({
+    explore_cache[EXPLORE_CACHE_KEY] = jsonify({
         "message": message,
         "statusCode": status_code,
     })
 
-    return explore_cache[list_type]
+    return explore_cache[EXPLORE_CACHE_KEY]
 
-
-TABLE_LIMIT = 25
+EXPLORE_TABLE_LIMIT = 250
+EXPLORE_CACHE_KEY = "explore"
 MAX_TITLE_LENGTH = 100
 MAX_CREATOR_LENGTH = 30
 MAX_RESOURCE_LENGTH = 50

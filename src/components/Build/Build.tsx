@@ -78,7 +78,7 @@ function Build(): JSX.Element {
                   <span className="tool-tip-custom">
                     <MDBIcon icon="info-circle" />
                   </span>
-                  <span>Must be complete URL (e.g. https://example.com instead of example.com)</span>
+                  <span>Must be a full URL (e.g. https://example.com instead of example.com)</span>
                 </MDBTooltip>
               </label>
               <textarea id="resources" className="form-control" autoComplete="off" placeholder="single url per line" rows={7}/>
