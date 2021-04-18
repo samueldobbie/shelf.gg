@@ -1,5 +1,5 @@
 const Config = {
-    BaseApiUrl: "http://localhost:5001",
+    BaseApiUrl: "http://0.0.0.0:5001/",
 }
 
 export default Config

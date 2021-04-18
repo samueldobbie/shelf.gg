@@ -1,5 +1,5 @@
-import { MDBContainer, MDBRow, MDBCol, MDBLink, MDBAlert } from 'mdbreact'
-import { useEffect, useState } from 'react'
+import { MDBContainer, MDBRow, MDBCol, MDBLink, MDBAlert, MDBTooltip, MDBIcon } from 'mdbreact'
+import React, { useEffect, useState } from 'react'
 
 import Title from '@shelf/helpers/Title'
 import Config from '@shelf/helpers/Config'
@@ -70,6 +70,16 @@ function Build(): JSX.Element {
 
               <label htmlFor="resources" className="grey-text">
                 resource list (max 50)
+                <MDBTooltip
+                  domElement
+                  tag="span"
+                  placement="top"
+                >
+                  <span className="tool-tip-custom">
+                    <MDBIcon icon="info-circle" />
+                  </span>
+                  <span>Must be complete URL (e.g. https://example.com instead of example.com)</span>
+                </MDBTooltip>
               </label>
               <textarea id="resources" className="form-control" autoComplete="off" placeholder="single url per line" rows={7}/>
 

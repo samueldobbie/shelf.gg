@@ -5,6 +5,7 @@ import Title from '@shelf/helpers/Title'
 import Table from './Table/Table'
 import './Explore.css'
 
+
 function Explore(): JSX.Element {
   useEffect(() => {
     document.title = Title.Explore

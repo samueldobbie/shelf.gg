@@ -5,6 +5,7 @@ from flask_cors import CORS
 from better_profanity import profanity
 from fake_useragent import UserAgent
 from bson.json_util import dumps
+from cachetools import TTLCache
 from bs4 import BeautifulSoup
 from bookcover import draw
 from waitress import serve
@@ -18,11 +19,11 @@ import json
 import time
 import os
 
+explore_cache = TTLCache(maxsize=100, ttl=360)
 app = Flask(__name__)
-app.config["MONGO_URI"] = "mongodb://db:27017/prd"
+app.config["MONGO_URI"] = "mongodb://db/prd"
 mongo = PyMongo(app)
 CORS(app)
-
 
 @app.route(Route.CREATE_SHELF, methods=["POST"])
 def create_shelf():
@@ -154,6 +155,9 @@ def find_shelf(shelf_id, count_view):
 @app.route(Route.FIND_SHELVES, methods=["GET"])
 def find_shelves(list_type):
     try:
+        if list_type in explore_cache:
+            return explore_cache[list_type]
+
         if list_type == "popular":
             shelves = mongo.db.shelf.find().sort("views", -1).limit(TABLE_LIMIT)
         elif list_type == "recent":
@@ -167,10 +171,12 @@ def find_shelves(list_type):
         message = str(e)
         status_code = 404
 
-    return jsonify({
+    explore_cache[list_type] = jsonify({
         "message": message,
         "statusCode": status_code,
     })
+
+    return explore_cache[list_type]
 
 
 TABLE_LIMIT = 25

@@ -5,9 +5,12 @@ import Config from '@shelf/helpers/Config'
 import './Table.css'
 
 function Table(props: any): JSX.Element {
+  const [load, setLoad] = useState(false)
   const [items, setItems] = useState([])
 
   useEffect(() => {
+    setLoad(true)
+
     const url = `${Config.BaseApiUrl}/api/v1/shelf/all/${props.listType}`
     
     fetch(url)
@@ -18,6 +21,7 @@ function Table(props: any): JSX.Element {
           setItems(shelves)
         }
       })
+      .finally(() => setLoad(false))
   }, [props.listType])
 
   function redirectToShelf(shelfId: string): void {
@@ -35,19 +39,25 @@ function Table(props: any): JSX.Element {
         </tr>
       </MDBTableHead>
       <MDBTableBody>
-        {items.map((value) => {
-          const date = getDate(value['created'])
-          const resources = value['resources'] as string[]
+        {load === true &&
+          <span>loading...</span>
+        }
 
-          return (
-            <tr key={value['_id']} className="table-row-custom" onClick={() => redirectToShelf(value['_id'])}>
-              <td>{ date }</td>
-              <td>{ value['title'] }</td>
-              <td>{ resources.length }</td>
-              <td>{ value['views'] }</td>
-            </tr>
-          )
-        })}
+        {load === false &&
+          items.map((value) => {
+            const date = getDate(value['created'])
+            const resources = value['resources'] as string[]
+
+            return (
+              <tr key={value['_id']} className="table-row-custom" onClick={() => redirectToShelf(value['_id'])}>
+                <td>{ date }</td>
+                <td>{ value['title'] }</td>
+                <td>{ resources.length }</td>
+                <td>{ value['views'] }</td>
+              </tr>
+            )
+          })
+        }
       </MDBTableBody>
     </MDBTable>
   )
