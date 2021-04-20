@@ -158,8 +158,8 @@ def find_shelf(shelf_id, count_view):
 @app.route(Route.FIND_SHELVES, methods=["GET"])
 def find_shelves():
     try:
-        if EXPLORE_CACHE_KEY in explore_cache:
-            return explore_cache[EXPLORE_CACHE_KEY]
+        # if EXPLORE_CACHE_KEY in explore_cache:
+        #     return explore_cache[EXPLORE_CACHE_KEY]
 
         projection = {
             "created": 1,
@@ -176,12 +176,17 @@ def find_shelves():
         message = str(e)
         status_code = 404
 
-    explore_cache[EXPLORE_CACHE_KEY] = jsonify({
+    # explore_cache[EXPLORE_CACHE_KEY] = jsonify({
+    #     "message": message,
+    #     "statusCode": status_code,
+    # })
+
+    # return explore_cache[EXPLORE_CACHE_KEY]
+    
+    return jsonify({
         "message": message,
         "statusCode": status_code,
     })
-
-    return explore_cache[EXPLORE_CACHE_KEY]
 
 EXPLORE_TABLE_LIMIT = 250
 EXPLORE_CACHE_KEY = "explore"

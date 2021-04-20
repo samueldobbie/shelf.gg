@@ -29,7 +29,7 @@ const columns = [
 ]
 
 function redirectToShelf(shelfId: string): void {
-  window.location.href = '/s/' + shelfId
+  window.open(`${window.location.origin}/s/${shelfId}`)
 }
 
 function getDate(epoch: number): string {
@@ -45,12 +45,17 @@ function getDate(epoch: number): string {
 
 function Table(): JSX.Element {
   const [load, setLoad] = useState(false)
+  const [count, setCount] = useState(0);
   const [shelves, setShelves] = useState({
     columns: columns,
     rows: [],
   })
 
+
   useEffect(() => {
+    if (count > 0) return;
+
+    setCount(1)
     setLoad(true)
 
     const url = `${Config.BaseApiUrl}/api/v1/shelf/all`
@@ -62,10 +67,11 @@ function Table(): JSX.Element {
           const rows = JSON.parse(data.message)
 
           for (let i = 0; i < rows.length; i++) {
-            rows[i]["created"] = getDate(rows[i]["created"])
-            rows[i]["clickEvent"] = () => {
-              redirectToShelf(rows[i]["_id"])
-            }
+            const created = rows[i]["created"]
+            const id = rows[i]["_id"]
+
+            rows[i]["created"] = getDate(created)
+            rows[i]["clickEvent"] = () => redirectToShelf(id)
           }
 
           setShelves({
@@ -80,7 +86,10 @@ function Table(): JSX.Element {
   return (
     <>
       {load === false &&
-        <MDBDataTable data={shelves}/>
+        <MDBDataTable
+          data={shelves}
+          hover
+        />
       }
 
       {load === true &&
