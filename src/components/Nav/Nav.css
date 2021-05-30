@@ -9,6 +9,9 @@
 
 .nav-item-custom {
     margin-right: 5%;
+    display: flex;
+    justify-content: center;
+    flex-direction: column;
 }
 
 .nav-item-text {

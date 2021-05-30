@@ -4,7 +4,6 @@ import {
   MDBCardTitle, MDBJumbotron, MDBLink
 } from 'mdbreact'
 import { useEffect } from 'react'
-import GitHubButton from 'react-github-btn'
 
 import Endpoint from '@shelf/helpers/Endpoint'
 import Title from '@shelf/helpers/Title'
@@ -23,26 +22,17 @@ function Home(): JSX.Element {
         </MDBCardTitle>
         <br/>
         <MDBCardText>
-          create, share, and find shelves of resources
+          create, share, and find resources
         </MDBCardText>
         <br/>
         <div className="pt-2">
-          <MDBLink to={Endpoint.Build} className="landing-btn">
+          <MDBLink to={Endpoint.Build} className="landing-btn secondary">
             build
           </MDBLink>
           <MDBLink to={Endpoint.Explore} className="landing-btn">
             explore
           </MDBLink>
         </div>
-        <br/>
-        <GitHubButton
-          href="https://github.com/samueldobbie/shelf.gg"
-          data-size="large"
-          data-show-count="true"
-          aria-label="Star samueldobbie/shelf.gg on GitHub"
-        >
-          Star
-        </GitHubButton>
       </MDBCardBody>
     </MDBJumbotron>
   )
