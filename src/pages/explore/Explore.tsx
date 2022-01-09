@@ -1,5 +1,5 @@
 import { Container } from "@mui/material"
-import Table from "../../components/table/Table"
+import ShelfTable from "../../components/shelf-table/ShelfTable"
 
 function Explore(): JSX.Element {
   return (
@@ -9,7 +9,7 @@ function Explore(): JSX.Element {
         marginBottom: "5%",
       }}
     >
-      <Table/>
+      <ShelfTable/>
     </Container>
   )
 }

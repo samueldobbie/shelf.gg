@@ -3,30 +3,6 @@ import Endpoint from "../../commons/Endpoint"
 import { Link } from "react-router-dom"
 
 function Home(): JSX.Element {
-  // <MDBJumbotron className="text-center">
-  //   <MDBCardBody>
-  //     <MDBCardTitle className="h1">
-  //       shelf.gg
-  //     </MDBCardTitle>
-  //     <br/>
-
-  //     <MDBCardText>
-  //       create, share, and find resources
-  //     </MDBCardText>
-  //     <br/>
-
-  //     <div className="pt-2">
-  //       <MDBLink to={Endpoint.Client.Build} className="landing-btn secondary">
-  //         build
-  //       </MDBLink>
-
-  //       <MDBLink to={Endpoint.Client.Explore} className="landing-btn">
-  //         explore
-  //       </MDBLink>
-  //     </div>
-  //   </MDBCardBody>
-  // </MDBJumbotron>
-
   return (
     <div style={{ overflow: "hidden" }}>
       <Box
@@ -82,10 +58,10 @@ function Home(): JSX.Element {
             variant="outlined"
             size="large"
             component={Link}
-            to={Endpoint.Client.Create}
+            to={Endpoint.Client.Build}
             sx={{ fontWeight: "bold" }}
           >
-            Create a Shelf
+            Build a Shelf
           </Button>
         </div>
       </Box>

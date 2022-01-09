@@ -10,7 +10,7 @@ function PageTitle(props: Props): JSX.Element {
   return (
     <Helmet>
       <title>
-        {text} - CousCous
+        {text} - shelf.gg
       </title>
     </Helmet>
   )

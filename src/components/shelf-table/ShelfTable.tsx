@@ -49,7 +49,7 @@ const columns = [
   },
 ]
 
-function Table(): JSX.Element {
+function ShelfTable(): JSX.Element {
   const load = useState(false)
   const shelves = useState([] as string[][])
 
@@ -114,6 +114,10 @@ function Table(): JSX.Element {
               enabled: true,
             },
             jumpToPage: true,
+            selectableRows: "none",
+            download: false,
+            print: false,
+            elevation: 0,
           }}
         />
       }
@@ -121,4 +125,4 @@ function Table(): JSX.Element {
   )
 }
 
-export default Table
+export default ShelfTable
