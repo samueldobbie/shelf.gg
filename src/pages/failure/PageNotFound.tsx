@@ -1,16 +1,6 @@
-import { useEffect } from "react"
-import { MDBLink } from "mdbreact"
-
-import Endpoint from "@shelf/helpers/Endpoint"
-import Title from "@shelf/helpers/Title"
-
-import "./PageNotFound.css"
+import { Button } from "@mui/material"
 
 function PageNotFound(): JSX.Element {
-  useEffect(() => {
-    document.title = Title.PageNotFound
-  }, [])
-
   return (
   	<div className="container-fluid">
   		<div className="col-md-6 offset-md-3 text-center mt-5 pt-5">
@@ -23,9 +13,10 @@ function PageNotFound(): JSX.Element {
             how'd you end up here?...
           </h3>
           
-          <MDBLink to={Endpoint.Client.Home} color="indigo">
+          {/* to={Endpoint.Client.Home} */}
+          <Button>
             take me home
-          </MDBLink>
+          </Button>
         </div>
   	 </div>
   	</div>
