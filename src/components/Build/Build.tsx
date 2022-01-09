@@ -1,42 +1,42 @@
-import { MDBContainer, MDBRow, MDBCol, MDBLink, MDBAlert, MDBTooltip, MDBIcon } from 'mdbreact'
-import { useEffect, useState } from 'react'
+import { useEffect, useState } from "react"
+import { MDBContainer, MDBRow, MDBCol, MDBLink, MDBAlert, MDBTooltip, MDBIcon } from "mdbreact"
 
-import Title from '@shelf/helpers/Title'
-import Config from '@shelf/helpers/Config'
-import './Build.css'
+import Endpoint from "@shelf/helpers/Endpoint"
+import Title from "@shelf/helpers/Title"
+
+import "./Build.css"
 
 function Build(): JSX.Element {
   const [load, setLoad] = useState(false)
-  const [error, setError] = useState('')
+  const [error, setError] = useState("")
 
   useEffect(() => {
     document.title = Title.Build
-  })
+  }, [])
 
   const submitted = async () => {
-    setError('')
     setLoad(true)
+    setError("")
 
-    const url = `${Config.BaseApiUrl}/api/v1/shelf`
-    const title = document.getElementById('title') as HTMLInputElement
-    const creator = document.getElementById('creator') as HTMLInputElement
-    const resources = document.getElementById('resources') as HTMLInputElement
+    const title = document.getElementById("title") as HTMLInputElement
+    const creator = document.getElementById("creator") as HTMLInputElement
+    const resources = document.getElementById("resources") as HTMLInputElement
 
-    fetch(url, {
-      method: 'POST',
+    fetch(Endpoint.Server.Shelf, {
+      method: "POST",
       headers: {
-        'Content-Type': 'application/json',
+        "Content-Type": "application/json",
       },
       body: JSON.stringify({
-        'title': title.value,
-        'creator': creator.value,
-        'resources': resources.value.split('\n'),
+        "title": title.value,
+        "creator": creator.value,
+        "resources": resources.value.split("\n"),
       }),
     })
       .then(response => response.json())
       .then(data => {
         if (data.statusCode === 200) {
-          window.location.href = '/s/' + data.message
+          window.location.href = "/s/" + data.message
         } else {
           setError(data.message)
         }
@@ -54,7 +54,14 @@ function Build(): JSX.Element {
       
       <MDBRow>
         <MDBCol>
-          {load === false &&
+          {load &&
+            <div className="text-center">
+              <div className="spinner-border" role="status"></div>
+              <p className="spinner-text">building shelf...</p>
+            </div>
+          }
+
+          {!load &&
             <form>
               <label htmlFor="title" className="grey-text">
                 title
@@ -78,7 +85,10 @@ function Build(): JSX.Element {
                   <span className="tool-tip-custom">
                     <MDBIcon icon="info-circle" />
                   </span>
-                  <span>Must be a complete URL (e.g. https://example.com instead of example.com)</span>
+
+                  <span>
+                    Must be a complete URL (e.g. https://example.com instead of example.com)
+                  </span>
                 </MDBTooltip>
               </label>
               <textarea id="resources" className="form-control" autoComplete="off" placeholder="single url per line" rows={7}/>
@@ -87,13 +97,6 @@ function Build(): JSX.Element {
                 publish
               </MDBLink>
             </form>
-          }
-
-          {load === true &&
-            <div className="text-center">
-              <div className="spinner-border" role="status"></div>
-              <p className="spinner-text">building shelf...</p>
-            </div>
           }
         </MDBCol>
       </MDBRow>

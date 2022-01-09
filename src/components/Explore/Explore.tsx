@@ -1,15 +1,16 @@
-import { MDBContainer, MDBRow, MDBCol } from 'mdbreact'
-import { useEffect } from 'react'
+import { useEffect } from "react"
+import { MDBContainer, MDBRow, MDBCol } from "mdbreact"
 
-import Title from '@shelf/helpers/Title'
-import Table from './Table/Table'
-import './Explore.css'
+import Title from "@shelf/helpers/Title"
+
+import Table from "./Table/Table"
+import "./Explore.css"
 
 
 function Explore(): JSX.Element {
   useEffect(() => {
     document.title = Title.Explore
-  })
+  }, [])
 
   return (
     <MDBContainer>

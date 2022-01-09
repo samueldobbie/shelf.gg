@@ -1,18 +1,15 @@
-import {
-  MDBCardBody,
-  MDBCardText,
-  MDBCardTitle, MDBJumbotron, MDBLink
-} from 'mdbreact'
-import { useEffect } from 'react'
+import { useEffect } from "react"
+import { MDBCardBody, MDBCardText, MDBCardTitle, MDBJumbotron, MDBLink } from "mdbreact"
 
-import Endpoint from '@shelf/helpers/Endpoint'
-import Title from '@shelf/helpers/Title'
-import './Home.css'
+import Endpoint from "@shelf/helpers/Endpoint"
+import Title from "@shelf/helpers/Title"
+
+import "./Home.css"
 
 function Home(): JSX.Element {
   useEffect(() => {
     document.title = Title.Home
-  })
+  }, [])
 
   return (
     <MDBJumbotron className="text-center">
@@ -21,15 +18,18 @@ function Home(): JSX.Element {
           shelf.gg
         </MDBCardTitle>
         <br/>
+
         <MDBCardText>
           create, share, and find resources
         </MDBCardText>
         <br/>
+
         <div className="pt-2">
-          <MDBLink to={Endpoint.Build} className="landing-btn secondary">
+          <MDBLink to={Endpoint.Client.Build} className="landing-btn secondary">
             build
           </MDBLink>
-          <MDBLink to={Endpoint.Explore} className="landing-btn">
+
+          <MDBLink to={Endpoint.Client.Explore} className="landing-btn">
             explore
           </MDBLink>
         </div>

@@ -20,8 +20,13 @@ npm-debug.log*
 yarn-debug.log*
 yarn-error.log*
 
-.idea/
-
 # python
 .venv/
 __pycache__/
+
+# ide
+.idea/
+.vscode/
+
+# firebase
+.firebase/

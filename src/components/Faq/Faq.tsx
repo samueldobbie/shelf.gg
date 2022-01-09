@@ -1,13 +1,14 @@
-import { MDBContainer, MDBRow, MDBCol } from 'mdbreact'
-import { useEffect } from 'react'
+import { useEffect } from "react"
+import { MDBContainer, MDBRow, MDBCol } from "mdbreact"
 
-import Title from '@shelf/helpers/Title'
-import './Faq.css'
+import Title from "@shelf/helpers/Title"
+
+import "./Faq.css"
 
 function Faq(): JSX.Element {
   useEffect(() => {
     document.title = Title.Faq
-  })
+  }, [])
 
   return (
     <MDBContainer>
@@ -51,8 +52,14 @@ function Faq(): JSX.Element {
 function FaqItem(props: any): JSX.Element {
   return (
     <>
-      <h5 className="faq-item-text">{props.question}</h5>
-      <p className="faq-item-text">{props.answer}</p>
+      <h5 className="faq-item-text">
+        {props.question}
+      </h5>
+
+      <p className="faq-item-text">
+        {props.answer}
+      </p>
+
       <br/>
     </>
   )
