@@ -1,7 +1,7 @@
 const Client = {
   Home: "/",
   Faq: "/faq",
-  Create: "/create",
+  Build: "/build",
   Explore: "/explore",
   Shelf: "/s/*",
   PageNotFound: "*",

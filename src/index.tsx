@@ -5,7 +5,8 @@ import { BrowserRouter, Route, Routes } from "react-router-dom"
 import Endpoint from "./commons/Endpoint"
 import PageTitle from "./commons/PageTitle"
 import Navbar from "./components/navbar/Navbar"
-import Create from "./pages/create/Create"
+import BuildShelf from "./pages/build-shelf/BuildShelf"
+import Create from "./pages/build-shelf/BuildShelf"
 import Explore from "./pages/explore/Explore"
 import PageNotFound from "./pages/failure/PageNotFound"
 import Faq from "./pages/faq/Faq"
@@ -81,11 +82,11 @@ function App(): JSX.Element {
           />
 
           <Route
-            path={Endpoint.Client.Create}
+            path={Endpoint.Client.Build}
             element={(
               <>
                 <PageTitle text="Build" />
-                <Create />
+                <BuildShelf />
               </>
             )}
           />

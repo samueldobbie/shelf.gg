@@ -1,11 +1,16 @@
+import Accordion from "@mui/material/Accordion"
+import AccordionSummary from "@mui/material/AccordionSummary"
+import AccordionDetails from "@mui/material/AccordionDetails"
+import Typography from "@mui/material/Typography"
+import ExpandMoreIcon from "@mui/icons-material/ExpandMore"
 import { Container } from "@mui/material"
 
-function Faq(): JSX.Element {
+function Faq() {
   return (
-    <Container>
+    <Container sx={{ marginTop: "5%" }}>
       <FaqItem
         question="What are shelves?"
-        answer="Shelves are collections of related content that make it easy to share and find resources."
+        answer="Shelves are collections of related resources."
       />
 
       <FaqItem
@@ -45,17 +50,19 @@ function FaqItem(props: Props): JSX.Element {
   const { question, answer } = props
 
   return (
-    <>
-      <h5 className="faq-item-text">
-        {question}
-      </h5>
+    <Accordion elevation={0} sx={{ marginBottom: 2 }}>
+      <AccordionSummary expandIcon={<ExpandMoreIcon />}>
+        <Typography sx={{ fontWeight: "bold" }}>
+          {question}
+        </Typography>
+      </AccordionSummary>
 
-      <p className="faq-item-text">
-        {answer}
-      </p>
-
-      <br/>
-    </>
+      <AccordionDetails>
+        <Typography>
+          {answer}
+        </Typography>
+      </AccordionDetails>
+    </Accordion>
   )
 }
 

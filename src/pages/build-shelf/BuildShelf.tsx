@@ -139,7 +139,7 @@ function Create(): JSX.Element {
             fontWeight: "bold",
           }}
         >
-          Publish shelf
+          Build shelf
         </LoadingButton>
       </form>
     </Container>

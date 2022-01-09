@@ -60,7 +60,7 @@ function Navbar() {
 
           <Button
             component={Link}
-            to={Endpoint.Client.Create}
+            to={Endpoint.Client.Build}
             sx={{
               fontWeight: "bold",
               color: "text.primary",
@@ -69,7 +69,7 @@ function Navbar() {
               marginRight: 2,
             }}
           >
-            Create
+            Build
           </Button>
         </Toolbar>
       </Container>
