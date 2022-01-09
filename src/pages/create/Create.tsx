@@ -1,14 +1,32 @@
-import { Container, Link, Tooltip } from "@mui/material"
-import { useState } from "react"
+import { CircularProgress, Container, TextField, Typography } from "@mui/material"
+import { useState } from "@hookstate/core"
 import Endpoint from "../../commons/Endpoint"
+import FormAlert, { defaultFormAlert } from "../../components/form-alert/FormAlert"
+import { LoadingButton } from "@mui/lab"
+import { useForm } from "react-hook-form"
+
+interface IShelfForm {
+  name: string
+  creator: string
+  resources: string
+}
 
 function Create(): JSX.Element {
-  const [load, setLoad] = useState(false)
-  const [error, setError] = useState("")
+  const load = useState(false)
+  const formAlert = useState(defaultFormAlert)
 
-  const submitted = async () => {
-    setLoad(true)
-    setError("")
+  const {
+    register,
+    handleSubmit,
+    formState: {
+      errors,
+      isSubmitting,
+    },
+  } = useForm<IShelfForm>()
+
+  const onSubmit = (data: IShelfForm) => {
+    load.set(true)
+    formAlert.set(defaultFormAlert)
 
     const title = document.getElementById("title") as HTMLInputElement
     const creator = document.getElementById("creator") as HTMLInputElement
@@ -28,56 +46,104 @@ function Create(): JSX.Element {
       .then(response => response.json())
       .then(data => {
         if (data.statusCode === 200) {
-          window.location.href = "/s/" + data.message
+          window.location.href = `/s/${data.message}`
         } else {
-          setError(data.message)
+          formAlert.set({
+            type: "error",
+            message: data.message,
+          })
         }
       })
-      .finally(() => setLoad(false))
+      .finally(() => load.set(false))
   }
 
   return (
-    <Container className="build-container">
-      {/* {error &&
-        <MDBAlert color="danger" >
-          {error}
-        </MDBAlert>
-      } */}
-      
-      {load &&
-        <div className="text-center">
-          <div className="spinner-border" role="status"></div>
-          <p className="spinner-text">building shelf...</p>
-        </div>
+    <Container>
+      {load.value &&
+        <>
+          <CircularProgress />
+
+          <Typography variant="h6" gutterBottom>
+            Building shelf...
+          </Typography>
+        </>
       }
 
-      {!load &&
-        <form>
-          <label htmlFor="title" className="grey-text">
-            title
-          </label>
-          <input type="text" id="title" className="form-control" defaultValue="untitled" autoComplete="off" maxLength={100}/>
-          <br/>
+      {!load.value &&
+        <form
+          onSubmit={handleSubmit(onSubmit)}
+          style={{
+            textAlign: "center",
+            marginTop: "5%",
+          }}
+        >
+          <FormAlert alert={formAlert} />
 
-          <label htmlFor="creator" className="grey-text">
-            creator
-          </label>
-          <input type="text" id="creator" className="form-control" defaultValue="anonymous" autoComplete="off"  maxLength={30}/>
-          <br/>
+          <TextField
+            variant="outlined"
+            margin="normal"
+            type="text"
+            label="Shelf Name"
+            value="Untitled"
+            placeholder="e.g. Beginner Python Tutorials"
+            error={!!errors.name}
+            helperText={errors.name && errors.name.message}
+            sx={{ width: "80%" }}
+            {...register("name", {
+              required: "You must give the shelf a name",
+            })}
+          />
+          <br />
 
-          <label htmlFor="resources" className="grey-text">
-            resource list (max 50)
-            <Tooltip placement="top" title="Must be a complete URL (e.g. https://example.com instead of example.com)">
-              <span className="tool-tip-custom">
-                {/* <MDBIcon icon="info-circle" /> */}
-              </span>
-            </Tooltip>
-          </label>
-          <textarea id="resources" className="form-control" autoComplete="off" placeholder="single url per line" rows={7}/>
+          <TextField
+            variant="outlined"
+            margin="normal"
+            type="text"
+            label="Creator"
+            placeholder="e.g. John Doe"
+            value={"Anonymous"}
+            error={!!errors.creator}
+            helperText={errors.creator && errors.creator.message}
+            sx={{ width: "80%" }}
+            {...register("creator", {
+              required: "You must specify the creator of the shelf",
+            })}
+          />
+          <br />
 
-          <Link className="text-center mt-4" onClick={submitted}>
-            publish
-          </Link>
+          {/* Must be a complete URL (e.g. https://example.com instead of example.com) */}
+
+          <TextField
+            autoFocus
+            multiline
+            rows={15}
+            variant="outlined"
+            margin="normal"
+            type="text"
+            label="URLs (Max 50)"
+            placeholder="e.g. https://www.youtube.com/watch?v=dQw4w9WgXcQ"
+            error={!!errors.resources}
+            helperText={errors.resources && errors.resources.message}
+            sx={{ width: "80%" }}
+            {...register("resources", {
+              required: "You must specify at least one resource URL",
+            })}
+          />
+          <br />
+
+          <LoadingButton
+            loading={isSubmitting}
+            type="submit"
+            variant="contained"
+            color="primary"
+            sx={{
+              marginTop: 2,
+              marginBottom: 3,
+              fontWeight: "bold",
+            }}
+          >
+            Publish shelf
+          </LoadingButton>
         </form>
       }
     </Container>

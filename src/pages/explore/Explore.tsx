@@ -1,4 +1,5 @@
 import { Container } from "@mui/material"
+import Table from "../../components/table/Table"
 
 function Explore(): JSX.Element {
   return (
@@ -8,8 +9,7 @@ function Explore(): JSX.Element {
         marginBottom: "5%",
       }}
     >
-      {/* <Table/> */}
-      Explore
+      <Table/>
     </Container>
   )
 }

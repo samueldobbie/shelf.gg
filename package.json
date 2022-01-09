@@ -17,16 +17,21 @@
     "@fontsource/roboto-mono": "^4.5.0",
     "@hookstate/core": "^3.0.13",
     "@hookstate/persistence": "^3.0.0",
+    "@material-ui/icons": "^4.11.2",
     "@mui/icons-material": "^5.2.0",
     "@mui/lab": "^5.0.0-alpha.58",
     "@mui/material": "^5.1.1",
+    "@mui/styles": "^5.2.3",
     "@mui/system": "^5.2.2",
+    "@mui/x-data-grid": "^5.2.2",
     "@types/node": "^12.0.0",
     "@types/react": "^17.0.0",
     "@types/react-dom": "^17.0.0",
     "@types/react-helmet": "^6.1.4",
     "firebase": "^9.5.0",
+    "material-table": "^1.69.3",
     "material-ui-image": "^3.3.2",
+    "mui-datatables": "^4.0.0",
     "react": "^17.0.2",
     "react-dom": "^17.0.2",
     "react-helmet": "^6.1.0",
@@ -54,5 +59,8 @@
       "react-app",
       "react-app/jest"
     ]
+  },
+  "devDependencies": {
+    "@types/mui-datatables": "^3.7.7"
   }
 }

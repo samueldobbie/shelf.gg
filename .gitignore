@@ -30,3 +30,6 @@ __pycache__/
 
 # firebase
 .firebase/
+
+# Env
+.env
