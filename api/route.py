@@ -1,5 +1,4 @@
 class Route:
-    BASE = "/api/v1"
-    CREATE_SHELF = BASE + "/shelf"
-    FIND_SHELF = BASE + "/shelf/<shelf_id>/<count_view>"
-    FIND_SHELVES = BASE + "/shelf/all"
+    CREATE_SHELF = "/api/v1/shelf"
+    FIND_SHELF = "/api/v1/shelf/<shelf_id>/<count_view>"
+    FIND_SHELVES = "/api/v1/shelf/all"

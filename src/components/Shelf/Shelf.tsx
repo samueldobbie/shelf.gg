@@ -1,46 +1,46 @@
-import { useEffect, useState } from 'react'
-import { MDBContainer } from 'mdbreact'
+import { useEffect, useState } from "react"
+import { MDBContainer } from "mdbreact"
 
-import { buildTitle } from '@shelf/helpers/Title'
-import Endpoint from '@shelf/helpers/Endpoint'
-import Config from '@shelf/helpers/Config'
-import './Shelf.css'
+import Endpoint from "@shelf/helpers/Endpoint"
+import { buildTitle } from "@shelf/helpers/Title"
+
+import "./Shelf.css"
 
 function Shelf(): JSX.Element {
-  const [title, setTitle] = useState('')
-  const [creator, setCreator] = useState('')
+  const [title, setTitle] = useState("")
+  const [creator, setCreator] = useState("")
   const [views, setViews] = useState(0)
   const [resources, setResources] = useState([])
 
   useEffect(() => {
-    const parameters = window.location.href.split('/s/')
-    
+    const parameters = window.location.href.split("/s/")
+
     if (parameters.length <= 1) {
-      window.location.href = Endpoint.PageNotFound
+      window.location.href = Endpoint.Client.PageNotFound
     }
 
     const id = parameters[1]
     const countView = hasViewedCookie() === false     
-    const url = `${Config.BaseApiUrl}/api/v1/shelf/${id}/${countView}` 
+    const url = `${Endpoint.Server.Shelf}/${id}/${countView}` 
 
     if (countView) {
       setViewedCookie(id)
     }
-    
+
     fetch(url)
       .then(response => response.json())
       .then(data => {
         if (data.statusCode === 200) {
           const shelf = JSON.parse(data.message)
 
-          document.title = buildTitle(shelf['title'])
+          setTitle(shelf["title"])
+          setCreator(shelf["creator"])
+          setViews(shelf["views"])
+          setResources(shelf["resources"])
 
-          setTitle(shelf['title'])
-          setCreator(shelf['creator'])
-          setViews(shelf['views'])
-          setResources(shelf['resources'])
+          document.title = buildTitle(shelf["title"])
         } else {
-          window.location.href = Endpoint.PageNotFound
+          window.location.href = Endpoint.Client.PageNotFound
         }
       })
   }, [])
@@ -86,7 +86,7 @@ function setViewedCookie(pathId: string): void {
 }
 
 function hasViewedCookie(): boolean {
-  return document.cookie.indexOf('viewedAt=') !== -1
+  return document.cookie.indexOf("viewedAt=") !== -1
 }
 
 export default Shelf
