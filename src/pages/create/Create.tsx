@@ -27,13 +27,14 @@ function Create(): JSX.Element {
   const onSubmit = (data: ICreateForm) => {
     formAlert.set(defaultFormAlert)
 
+    const created = Date.now()
     let { title, creator, resources } = data
 
-    if (title.length === 0) {
+    if (title === null || title.length === 0) {
       title = "Untitled"
     }
 
-    if (creator.length === 0) {
+    if (creator === null || creator.length === 0) {
       creator = "Anonymous"
     }
 
@@ -49,10 +50,21 @@ function Create(): JSX.Element {
         }
       })
 
+    if (urls.length === 0) {
+      formAlert.set({
+        type: "error",
+        message: "No valid URLs found",
+      })
+
+      return
+    }
+
     addDoc(collection(db, "shelves"), {
+      created,
       title,
       creator,
       urls,
+      views: 0,
     })
       .then((doc) => window.location.href = `/s/${doc.id}`)
       .catch((error) => formAlert.set({

@@ -1,65 +1,106 @@
 import { useState } from "@hookstate/core"
-import { CircularProgress, Typography } from "@mui/material"
-import MUIDataTable from "mui-datatables"
+import { CircularProgress, Container, Typography } from "@mui/material"
+import MUIDataTable, { Display } from "mui-datatables"
 import { useEffect } from "react"
+import { query, collection, getDocs } from "firebase/firestore"
+import { db } from "../../commons/Firebase"
+import { getDate } from "../../commons/Date"
 
 const columns = [
-  "Created",
-  "Title",
-  "# Resources",
-  "# Views",
+  {
+    name: "id",
+    label: "ID",
+    options: {
+      filter: false,
+      search: false,
+      display: 'excluded' as Display,
+    }
+  },      
+  {
+    name: "created",
+    label: "Created",
+    options: {
+      filter: false,
+      search: false,
+    }
+  },
+  {
+    name: "title",
+    label: "Title",
+    options: {
+      filter: true,
+      search: true,
+    }
+  },
+  {
+    name: "# Resources",
+    label: "# Resources",
+    options: {
+      filter: false,
+      search: false,
+    }
+  },
+  {
+    name: "# Views",
+    Label: "# Views",
+    options: {
+      filter: false,
+    }
+  },
 ]
 
 function Table(): JSX.Element {
   const load = useState(false)
   const shelves = useState([] as string[][])
 
+  const handleRowClick = (rowData: string[], rowMeta: { dataIndex: number, rowIndex: number }) => {
+    console.log(rowData)
+    redirectToShelf(rowData[0])
+  }
+
+  const redirectToShelf = (shelfId: string) => {
+    window.open(`${window.location.origin}/s/${shelfId}`)
+  }
+
   useEffect(() => {
-    shelves.set([
-      ["2020-01-01", "My first shelf", "1", "1"],
-      ["2020-01-01", "My first shelf", "1", "1"],
-      ["2020-01-01", "My first shelf", "1", "1"],
-    ])
+    load.set(true)
+
+    const retrievedShelves = [] as string[][]
+    const shelvesQuery = query(collection(db, "shelves"))
+
+    getDocs(shelvesQuery)
+      .then((docs) => {
+        docs.forEach((doc) => {
+          const data = doc.data()
+
+          retrievedShelves.push([
+            doc.id,
+            getDate(data.created),
+            data.title,
+            data.urls.length,
+            data.views,
+          ])
+        })
+      })
+      .then(() => shelves.set(retrievedShelves))
+      .finally(() => load.set(false))
   }, [])
 
-  // useEffect(() => {
-  //   setLoad(true)
-
-  //   const url = `${Endpoint.Server.Shelf}/all`
-
-  //   fetch(url)
-  //     .then(response => response.json())
-  //     .then(data => {
-  //       if (data.statusCode === 200) {
-  //         const rows = JSON.parse(data.message)
-
-  //         for (let i = 0; i < rows.length; i++) {
-  //           const created = rows[i]["created"]
-  //           const id = rows[i]["_id"]
-
-  //           rows[i]["created"] = getDate(created)
-  //           rows[i]["clickEvent"] = () => redirectToShelf(id)
-  //         }
-
-  //         setShelves({
-  //           columns: columns,
-  //           rows: rows,
-  //         })
-  //       }
-  //     })
-  //     .finally(() => setLoad(false))
-  // }, [])
-
   return (
-    <>
+    <Container>
       {load.value &&
-        <>
+        <div
+          style={{
+            textAlign: "center",
+            marginTop: "15%",
+          }}
+        >
           <CircularProgress />
           
           <Typography>
             Loading shelves...
           </Typography>
-        </>
+        </div>
       }
 
       {!load.value &&
@@ -67,25 +108,17 @@ function Table(): JSX.Element {
           title="All Shelves"
           data={shelves.value}
           columns={columns}
+          options={{
+            onRowClick: handleRowClick,
+            draggableColumns: {
+              enabled: true,
+            },
+            jumpToPage: true,
+          }}
         />
       }
-    </>
+    </Container>
   )
-}
-
-function redirectToShelf(shelfId: string): void {
-  window.open(`${window.location.origin}/s/${shelfId}`)
-}
-
-function getDate(epoch: number): string {
-  const date = new Date(0)
-  date.setUTCSeconds(epoch)
-
-  const day = new Intl.DateTimeFormat("en", { day: "2-digit" }).format(date)
-  const month = new Intl.DateTimeFormat("en", { month: "short" }).format(date)
-  const year = new Intl.DateTimeFormat("en", { year: "2-digit" }).format(date)
-
-  return `${day}-${month}-${year}`.toLowerCase()
 }
 
 export default Table
