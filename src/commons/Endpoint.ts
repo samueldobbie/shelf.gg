@@ -8,13 +8,12 @@ const Client = {
 }
 
 const External = {
-  Repo: "https://github.com/samueldobbie/shelf.gg",
+  GitHubRepo: "https://github.com/samueldobbie/shelf.gg",
 }
 
-const backendUrl = "https://api.0djtjjj76i2ko.eu-west-2.cs.amazonlightsail.com"
-
+const apiUrl = "https://z0tj2bngbd.execute-api.us-west-2.amazonaws.com/production"
 const Server = {
-  Shelf: backendUrl + "/api/v1/shelf",
+  ExtractMetaData: apiUrl + "/public/v1/extract-meta",
 }
 
 const Endpoint = {

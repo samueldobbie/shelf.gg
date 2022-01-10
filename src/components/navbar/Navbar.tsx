@@ -86,7 +86,7 @@ function Navbar() {
               }}
             >
               <GitHubButton
-                href="https://github.com/samueldobbie/shelf.gg"
+                href={Endpoint.External.GitHubRepo}
                 data-size="large"
                 data-show-count="true"
               >
