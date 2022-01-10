@@ -4,6 +4,7 @@ import { useParams } from "react-router-dom"
 import { Box, Button, Card, CardActions, CardContent, Container, Typography } from "@mui/material"
 import { doc, getDoc, increment, setDoc } from "@firebase/firestore"
 import { db } from "../../commons/Firebase"
+import { urlToAlphanumeric } from "../../commons/UrlToAlpha"
 
 interface Resource {
   url: string
@@ -79,12 +80,30 @@ function Shelf(): JSX.Element {
   }, [title])
 
   useEffect(() => {
-    fetch(Endpoint.Server.ExtractMetaData, {
-      method: "POST",
-      body: JSON.stringify({ urls }),
-    })
-      .then((response) => response.json())
-      .then((data) => setResources(data["result"]))
+    async function getResources(): Promise<Resource[]> {
+      const retrievedResources = [] as Resource[]
+      
+      for (const url of urls) {
+        const docRef = doc(db, "resources", urlToAlphanumeric(url))
+
+        await getDoc(docRef)
+          .then((doc) => {
+            if (doc.exists()) {
+              const data = doc.data()
+
+              if (data) {
+                retrievedResources.push(data as Resource)
+              }
+            }
+          })
+      }
+
+      return retrievedResources
+    }
+
+    getResources()
+      .then((resources) => setResources(resources))
+      .catch(() => window.location.href = Endpoint.Client.PageNotFound)
   }, [urls])
 
   return (
