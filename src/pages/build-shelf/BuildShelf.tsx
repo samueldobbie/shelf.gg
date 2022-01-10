@@ -4,7 +4,9 @@ import FormAlert, { defaultFormAlert } from "../../components/form-alert/FormAle
 import { LoadingButton } from "@mui/lab"
 import { useForm } from "react-hook-form"
 import { db } from "../../commons/Firebase"
-import { addDoc, collection } from "firebase/firestore"
+import { addDoc, collection, doc, getDoc, setDoc } from "firebase/firestore"
+import Endpoint from "../../commons/Endpoint"
+import { cpuUsage } from "process"
 
 interface ICreateForm {
   title: string
@@ -24,31 +26,18 @@ function Create(): JSX.Element {
     },
   } = useForm<ICreateForm>()
 
-  const onSubmit = (data: ICreateForm) => {
+  const urlToAlphanumeric = (url: string): string => {
+    return url.replace(/[^a-zA-Z0-9]/g, "")
+  }
+
+  const onSubmit = async (data: ICreateForm) => {
     formAlert.set(defaultFormAlert)
 
     const created = Date.now()
-    let { title, creator, resources } = data
-
-    if (title === null || title.length === 0) {
-      title = "Untitled"
-    }
-
-    if (creator === null || creator.length === 0) {
-      creator = "Anonymous"
-    }
-
-    const urls = resources
-      .split("\n")
-      .map((r) => r.trim())
-      .filter((url) => {
-        try {
-          new URL(url)
-          return true
-        } catch (e) {
-          return false
-        }
-      })
+    const title = data.title || "Untitled"
+    const creator = data.creator || "Anonymous"
+    const urls = getFilteredUrls(data.resources)
+    const views = 0
 
     if (urls.length === 0) {
       formAlert.set({
@@ -59,18 +48,75 @@ function Create(): JSX.Element {
       return
     }
 
-    addDoc(collection(db, "shelves"), {
+    const unseenUrls = await getUnseenUrls(urls)
+
+    // TODO use urlMetadata package
+    // TODO central URL db collection
+    await fetch(Endpoint.Server.ExtractMetaData, {
+      method: "POST",
+      body: JSON.stringify({ urls: unseenUrls }),
+    })
+      .then((response) => response.json())
+      .then(async (data) => {
+        const resources = data["result"]
+
+        for (const resource of resources) {
+          const urlId = urlToAlphanumeric(resource.url)
+          const docRef = doc(db, "resources", urlId)
+          await setDoc(docRef, resource);
+        }
+      })
+
+    await addDoc(collection(db, "shelves"), {
       created,
       title,
       creator,
       urls,
-      views: 0,
+      views,
     })
       .then((doc) => window.location.href = `/s/${doc.id}`)
       .catch((error) => formAlert.set({
         type: "error",
         message: error.message,
       }))
+  }
+
+  const getFilteredUrls = (resources: string): string[] => {
+    return resources
+    .split("\n")
+    .map((url) => url.trim())
+    .filter((url, index, self) => {
+      return self.indexOf(url) === index
+    })
+    .filter((url) => {
+      try {
+        new URL(url)
+        return true
+      } catch (e) {
+        return false
+      }
+    })
+  }
+
+  const getUnseenUrls = async (urls: string[]): Promise<string[]> => {
+    const unseenUrls = [] as string[]
+
+    for (const url of urls) {
+      const docRef = doc(db, "resources", urlToAlphanumeric(url))
+      
+      console.log(docRef)
+
+      await getDoc(docRef)
+        .then((doc) => {
+          if (doc.exists()) {
+          } else {
+            unseenUrls.push(url)
+          }
+        })
+        .catch((e) => console.log(e))
+    }
+
+    return unseenUrls
   }
 
   return (

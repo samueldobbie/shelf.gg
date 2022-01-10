@@ -38,8 +38,8 @@ def extract_meta():
 def get_soup(url):
     try:
         headers = { "User-Agent": user_agent.random }
-        http_request = urllib.request.Request(url, headers=headers, timeout=5)
-        http_response = urllib.request.urlopen(http_request)
+        http_request = urllib.request.Request(url, headers=headers)
+        http_response = urllib.request.urlopen(http_request, timeout=5)
         return BeautifulSoup(http_response)
     except:
         return None
