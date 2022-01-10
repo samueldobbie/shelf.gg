@@ -50,7 +50,7 @@ function FaqItem(props: Props): JSX.Element {
   const { question, answer } = props
 
   return (
-    <Accordion elevation={0} sx={{ marginBottom: 2 }}>
+    <Accordion elevation={0} sx={{ marginBottom: 1 }}>
       <AccordionSummary expandIcon={<ExpandMoreIcon />}>
         <Typography sx={{ fontWeight: "bold" }}>
           {question}

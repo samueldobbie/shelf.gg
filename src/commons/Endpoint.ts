@@ -3,7 +3,7 @@ const Client = {
   Faq: "/faq",
   Build: "/build",
   Explore: "/explore",
-  Shelf: "/s/*",
+  Shelf: "/s/:shelfId*",
   PageNotFound: "*",
 }
 

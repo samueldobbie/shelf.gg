@@ -1,6 +1,7 @@
 import { Box, Typography, Button } from "@mui/material"
 import Endpoint from "../../commons/Endpoint"
 import { Link } from "react-router-dom"
+import ShelfTable from "../../components/shelf-table/ShelfTable"
 
 function Home(): JSX.Element {
   return (
@@ -67,8 +68,14 @@ function Home(): JSX.Element {
       </Box>
 
       {/* NEWEST SHELVES */}
+      <Box>
+        <ShelfTable />
+      </Box>
 
       {/* MOST POPULAR SHELVES */}
+      <Box sx={{ my: "8%" }}>
+        <ShelfTable />
+      </Box>
     </div>
   )
 }

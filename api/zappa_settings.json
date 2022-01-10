@@ -1,0 +1,16 @@
+{
+    "common": {
+        "aws_region": "us-west-2",
+        "app_function": "app.app",
+        "profile_name": "default",
+        "project_name": "api",
+        "runtime": "python3.7",
+        "s3_bucket": "zappa-k9jfndmnl"
+    },
+    "dev": {
+        "extends": "common"
+    },
+    "production": {
+        "extends": "common"
+    }
+}

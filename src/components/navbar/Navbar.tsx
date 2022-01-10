@@ -2,6 +2,7 @@ import { AppBar, Button, Container, Toolbar } from "@mui/material"
 import { Link } from "react-router-dom"
 import { Box } from "@mui/system"
 import Endpoint from "../../commons/Endpoint"
+import GitHubButton from "react-github-btn"
 
 function Navbar() {
   return (
@@ -71,6 +72,27 @@ function Navbar() {
           >
             Build
           </Button>
+
+          <Button
+              sx={{
+                color: "transparent",
+                backgroundColor: "transparent",
+                marginTop: 1,
+                cursor: "default",
+                marginLeft: 2,
+                "&:hover": {
+                  backgroundColor: "transparent",
+                },
+              }}
+            >
+              <GitHubButton
+                href="https://github.com/samueldobbie/shelf.gg"
+                data-size="large"
+                data-show-count="true"
+              >
+                Star
+              </GitHubButton>
+            </Button>
         </Toolbar>
       </Container>
     </AppBar>
