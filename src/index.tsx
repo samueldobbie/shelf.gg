@@ -6,11 +6,11 @@ import Endpoint from "./commons/Endpoint"
 import PageTitle from "./commons/PageTitle"
 import Navbar from "./components/navbar/Navbar"
 import BuildShelf from "./pages/build-shelf/BuildShelf"
-import Create from "./pages/build-shelf/BuildShelf"
 import Explore from "./pages/explore/Explore"
 import PageNotFound from "./pages/failure/PageNotFound"
 import Faq from "./pages/faq/Faq"
 import Home from "./pages/home/Home"
+import Shelf from "./pages/shelf/Shelf"
 
 const theme = createTheme({
   palette: {
@@ -91,16 +91,15 @@ function App(): JSX.Element {
             )}
           />
 
-          {/*
           <Route
-            path={"Endpoint.Client.Shelf"}
+            path={Endpoint.Client.Shelf}
             element={(
               <>
                 <PageTitle text="Shelf" />
-                <ForgotPassword />
+                <Shelf />
               </>
             )}
-          /> */}
+          />
 
           <Route
             path={Endpoint.Client.PageNotFound}

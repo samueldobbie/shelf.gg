@@ -1,94 +1,98 @@
-// import { useEffect, useState } from "react"
-// import { MDBContainer } from "mdbreact"
+import Endpoint from "../../commons/Endpoint"
+import { useEffect, useState } from "react"
+import { useParams } from "react-router-dom"
+import { Container } from "@mui/material"
+import { doc, getDoc, increment, setDoc } from "@firebase/firestore"
+import { db } from "../../commons/Firebase"
 
-// import Endpoint from "@shelf/commons/Endpoint"
-// import { buildTitle } from "@shelf/commons/helpers/Title"
+function Shelf(): JSX.Element {
+  const { shelfId } = useParams()
 
-// import "./Shelf.css"
+  const [title, setTitle] = useState("")
+  const [creator, setCreator] = useState("")
+  const [views, setViews] = useState(0)
+  const [urls, setUrls] = useState([] as string[])
 
-// function Shelf(): JSX.Element {
-//   const [title, setTitle] = useState("")
-//   const [creator, setCreator] = useState("")
-//   const [views, setViews] = useState(0)
-//   const [resources, setResources] = useState([])
+  const captureView = () => {
+    const shouldCaptureView = hasViewedCookie() === false     
 
-//   useEffect(() => {
-//     const parameters = window.location.href.split("/s/")
+    if (shouldCaptureView && shelfId) {
+      setViewedCookie()
+      const docRef = doc(db, "shelves", shelfId)
+      setDoc(docRef, { views: increment(1) }, { merge: true })
+    }
+  }
 
-//     if (parameters.length <= 1) {
-//       window.location.href = Endpoint.Client.PageNotFound
-//     }
+  function hasViewedCookie(): boolean {
+    return document.cookie.indexOf("viewedAt=") !== -1
+  }
 
-//     const id = parameters[1]
-//     const countView = hasViewedCookie() === false     
-//     const url = `${Endpoint.Server.Shelf}/${id}/${countView}` 
+  function setViewedCookie(): void {
+    const date = new Date()
+    date.setTime(date.getTime() + (60 * 60 * 1000))
 
-//     if (countView) {
-//       setViewedCookie(id)
-//     }
+    // TODO validate
 
-//     fetch(url)
-//       .then(response => response.json())
-//       .then(data => {
-//         if (data.statusCode === 200) {
-//           const shelf = JSON.parse(data.message)
+    document.cookie = `viewedAt=${date.toUTCString()}; expires=${date.toUTCString()}; path=/s/${shelfId}`
+  }
 
-//           setTitle(shelf["title"])
-//           setCreator(shelf["creator"])
-//           setViews(shelf["views"])
-//           setResources(shelf["resources"])
+  const getShelf = () => {
+    if (shelfId) {
+      const docRef = doc(db, "shelves", shelfId)
 
-//           document.title = buildTitle(shelf["title"])
-//         } else {
-//           window.location.href = Endpoint.Client.PageNotFound
-//         }
-//       })
-//   }, [])
+      getDoc(docRef)
+        .then((doc) => {
+          const data = doc.data()
 
-//   return (
-//     <>
-//       <div className="text-center">
-//         <h1>{ title }</h1>
-//         <h4>created by { creator }</h4>
-//         <h4>{ views } views</h4>
-//       </div>
+          if (data) {
+            setTitle(data.title)
+            setCreator(data.creator)
+            setViews(data.views)
+            setUrls(data.urls)
+          }
+        })
+        .catch(() => window.location.href = Endpoint.Client.PageNotFound)
+    }
+  }
 
-//       <MDBContainer className="shelves-container text-center">
-//         {resources.map((value) => {
-//           const base64Image = JSON.parse(value["image"])
-//           const coverImageSrc = "data:image/png;base64," + atob(base64Image["$binary"])
+  useEffect(() => {
+    captureView()
+    getShelf()
+  }, [])
 
-//           return (
-//             <div className="bookshelf">
-//               <div className="book-grid">
-//                 <ul>
-//                   <li key={ value["url"] }>
-//                     <a href={ value["url"] } target="_blank" rel="noreferrer">
-//                       <img src={ coverImageSrc } alt="" />
-//                     </a>
-//                   </li>
-//                 </ul>
-//               </div>
-//               <div className="shelf-shadows"></div>
-//               <div className="shelf"></div>
-//             </div>
-//           )
-//         })}
-//       </MDBContainer>
-//     </>
-//   )
-// }
+  return (
+    <>
+      <div className="text-center">
+        <h1>{ title }</h1>
+        <h4>created by { creator }</h4>
+        <h4>{ views } views</h4>
+      </div>
 
-// function setViewedCookie(pathId: string): void {
-//   const date = new Date()
-//   date.setTime(date.getTime() + (60 * 60 * 1000))
-//   document.cookie = `viewedAt=${date.toUTCString()}; expires=${date.toUTCString()}; path=/s/${pathId}`
-// }
+      <Container className="shelves-container text-center">
+        {urls.map((url) => {
+          // const base64Image = JSON.parse(value["image"])
+          // const coverImageSrc = "data:image/png;base64," + atob(base64Image["$binary"])
 
-// function hasViewedCookie(): boolean {
-//   return document.cookie.indexOf("viewedAt=") !== -1
-// }
+          return (
+            <h1>abc</h1>
+            // <div className="bookshelf">
+            //   <div className="book-grid">
+            //     <ul>
+            //       <li key={ value["url"] }>
+            //         <a href={ value["url"] } target="_blank" rel="noreferrer">
+            //           <img src={ coverImageSrc } alt="" />
+            //         </a>
+            //       </li>
+            //     </ul>
+            //   </div>
+            //   <div className="shelf-shadows"></div>
+            //   <div className="shelf"></div>
+            // </div>
+          )
+        })}
+      </Container>
+    </>
+  )
+}
 
-// export default Shelf
-
-export {}
+export default Shelf
