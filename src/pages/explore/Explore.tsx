@@ -9,7 +9,7 @@ function Explore(): JSX.Element {
         marginBottom: "5%",
       }}
     >
-      <ShelfTable/>
+      <ShelfTable title="Public Shelves" />
     </Container>
   )
 }

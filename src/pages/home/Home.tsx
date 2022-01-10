@@ -67,14 +67,12 @@ function Home(): JSX.Element {
         </div>
       </Box>
 
-      {/* NEWEST SHELVES */}
       <Box>
-        <ShelfTable />
+        <ShelfTable title="Most Popular" />
       </Box>
 
-      {/* MOST POPULAR SHELVES */}
       <Box sx={{ my: "8%" }}>
-        <ShelfTable />
+        <ShelfTable title="Most Recent" />
       </Box>
     </div>
   )

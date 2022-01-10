@@ -49,7 +49,13 @@ const columns = [
   },
 ]
 
-function ShelfTable(): JSX.Element {
+interface Props {
+  title: string
+}
+
+function ShelfTable(props: Props): JSX.Element {
+  const { title } = props
+ 
   const load = useState(false)
   const shelves = useState([] as string[][])
 
@@ -105,7 +111,7 @@ function ShelfTable(): JSX.Element {
 
       {!load.value &&
         <MUIDataTable
-          title="All Shelves"
+          title={title}
           data={shelves.value}
           columns={columns}
           options={{
