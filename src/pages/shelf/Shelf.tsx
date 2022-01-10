@@ -98,6 +98,7 @@ function Shelf(): JSX.Element {
       {resources.map((resource) => {
         return (
           <div
+            key={resource.url}
             style={{
               width: "30%",
               margin: "5rem auto",
