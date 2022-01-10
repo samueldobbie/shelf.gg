@@ -13,25 +13,93 @@ CORS(app)
 def extract_meta():
     data = request.get_json(force=True)
     urls = data["urls"]
-    meta = []
+    result = []
 
     for url in urls:
-        title = get_title(url)
-        domain = tldextract.extract(url).domain
-        meta.append({
-            "title":title,
-            "domain": domain,
-        })
+        site_name = tldextract.extract(url).domain
+        soup = get_soup(url)
 
-    return jsonify({ "result": meta })
+        if soup is None:
+            data = get_default_data(
+                url=url,
+                site_name=site_name,
+            )
+        else:
+            data = parse_soup_data(
+                soup=soup,
+                url=url,
+                site_name=site_name,
+            )
 
-def get_title(url):
+        result.append(data)
+
+    return jsonify({ "result": result })
+
+def get_soup(url):
     try:
         headers = { "User-Agent": user_agent.random }
-        req = urllib.request.Request(url=url, headers=headers)
-        soup = BeautifulSoup(urllib.request.urlopen(req))
-        return soup.title.string
+        http_request = urllib.request.Request(url, headers=headers, timeout=5)
+        http_response = urllib.request.urlopen(http_request)
+        return BeautifulSoup(http_response)
     except:
-        return url
+        return None
+
+def get_default_data(url, site_name):
+    site_type = "website"
+    site_description = ""
+    site_image = ""
+
+    return {
+        "url": url,
+        "siteTitle": url,
+        "siteName": site_name,
+        "siteType": site_type,
+        "siteDescription": site_description,
+        "siteImage": site_image,
+    }
+
+def parse_soup_data(soup, url, site_name):
+    site_title = soup.title.string
+
+    site_name = get_meta_or_default(
+        soup=soup,
+        property="og:site_name",
+        default=site_name,
+    )
+
+    site_type = get_meta_or_default(
+        soup=soup,
+        property="og:type",
+        default="website",
+    )
+
+    site_description = get_meta_or_default(
+        soup=soup,
+        property="og:description",
+        default="",
+    )
+    
+    site_image = get_meta_or_default(
+        soup=soup,
+        property="og:image",
+        default="",
+    )
+
+    return {
+        "url": url,
+        "siteTitle": site_title,
+        "siteName": site_name,
+        "siteType": site_type,
+        "siteDescription": site_description,
+        "siteImage": site_image,
+    }
+
+def get_meta_or_default(soup, property, default):
+    meta = soup.find("meta", property=property)
+
+    if meta is not None and meta is not "":
+        return meta["content"]
+    else:
+        return default
 
 user_agent = UserAgent()
