@@ -9,15 +9,21 @@ import tldextract
 app = Flask(__name__)
 CORS(app)
 
-@app.route("/public/v1/extract-meta", methods=["GET"])
+@app.route("/public/v1/extract-meta", methods=["POST"])
 def extract_meta():
     data = request.get_json(force=True)
-    url = data["url"]
+    urls = data["urls"]
+    meta = []
 
-    title = get_title(url)
-    domain = tldextract.extract(url).domain
+    for url in urls:
+        title = get_title(url)
+        domain = tldextract.extract(url).domain
+        meta.append({
+            "title":title,
+            "domain": domain,
+        })
 
-    return jsonify({ "title": title, "domain": domain })
+    return jsonify({ "result": meta })
 
 def get_title(url):
     try:
