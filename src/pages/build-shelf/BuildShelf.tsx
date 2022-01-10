@@ -6,7 +6,7 @@ import { useForm } from "react-hook-form"
 import { db } from "../../commons/Firebase"
 import { addDoc, collection, doc, getDoc, setDoc } from "firebase/firestore"
 import Endpoint from "../../commons/Endpoint"
-import { cpuUsage } from "process"
+import { urlToAlphanumeric } from "../../commons/UrlToAlpha"
 
 interface ICreateForm {
   title: string
@@ -25,10 +25,6 @@ function Create(): JSX.Element {
       isSubmitting,
     },
   } = useForm<ICreateForm>()
-
-  const urlToAlphanumeric = (url: string): string => {
-    return url.replace(/[^a-zA-Z0-9]/g, "")
-  }
 
   const onSubmit = async (data: ICreateForm) => {
     formAlert.set(defaultFormAlert)
@@ -51,7 +47,6 @@ function Create(): JSX.Element {
     const unseenUrls = await getUnseenUrls(urls)
 
     // TODO use urlMetadata package
-    // TODO central URL db collection
     await fetch(Endpoint.Server.ExtractMetaData, {
       method: "POST",
       body: JSON.stringify({ urls: unseenUrls }),
