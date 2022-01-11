@@ -1,34 +1,28 @@
-import Endpoint from "../../commons/Endpoint"
-import { useEffect, useState } from "react"
+import { useEffect } from "react"
 import { useParams } from "react-router-dom"
-import { Box, Button, Card, CardActions, CardContent, Container, Typography } from "@mui/material"
+import { Container } from "@mui/material"
 import { doc, getDoc, increment, setDoc } from "@firebase/firestore"
-import { db } from "../../commons/Firebase"
-import { urlToAlphanumeric } from "../../commons/UrlToAlpha"
-
-interface Resource {
-  url: string
-  siteTitle: string
-  siteType: string
-  siteName: string
-  siteDescription: string
-  siteImage: string
-}
+import ShelfItem from "./ShelfItem"
+import { IResource } from "@shelf/commons/interfaces/IResource"
+import Endpoint from "@shelf/commons/utils/Endpoint"
+import { db } from "@shelf/commons/utils/Firebase"
+import { urlToAlphanumeric } from "@shelf/commons/utils/UrlToAlpha"
+import { useState } from "@hookstate/core"
 
 function Shelf(): JSX.Element {
   const { shelfId } = useParams()
 
-  const [title, setTitle] = useState("")
-  const [creator, setCreator] = useState("")
-  const [views, setViews] = useState(0)
-  const [urls, setUrls] = useState([] as string[])
-  const [resources, setResources] = useState([] as Resource[])
+  const title = useState("")
+  const creator = useState("")
+  const views = useState(0)
+  const urls = useState([] as string[])
+  const resources = useState([] as IResource[])
 
-  const updatePageTitle = () => {
-    document.title = `${title} - shelf.gg`
+  const updatePageTitle = (): void => {
+    document.title = `${title.value} - shelf.gg`
   }
 
-  const captureView = () => {
+  const captureView = (): void => {
     const shouldCaptureView = hasViewedCookie() === false     
 
     if (shouldCaptureView && shelfId) {
@@ -38,11 +32,11 @@ function Shelf(): JSX.Element {
     }
   }
 
-  function hasViewedCookie(): boolean {
+  const hasViewedCookie = (): boolean => {
     return document.cookie.indexOf("viewedAt=") !== -1
   }
 
-  function setViewedCookie(): void {
+  const setViewedCookie = (): void => {
     const date = new Date()
     const viewedAt = date.toUTCString()
     date.setDate(date.getDate() + 365)
@@ -51,7 +45,7 @@ function Shelf(): JSX.Element {
     document.cookie = `viewedAt=${viewedAt}; expires=${expiresAt}; path=/s/${shelfId}`
   }
 
-  const getShelf = () => {
+  const updateShelfData = (): void => {
     if (shelfId) {
       const docRef = doc(db, "shelves", shelfId)
 
@@ -60,10 +54,10 @@ function Shelf(): JSX.Element {
           const data = doc.data()
 
           if (data) {
-            setTitle(data.title)
-            setCreator(data.creator)
-            setViews(data.views)
-            setUrls(data.urls)
+            title.set(data.title)
+            creator.set(data.creator)
+            views.set(data.views)
+            urls.set(data.urls)
           }
         })
         .catch(() => window.location.href = Endpoint.Client.PageNotFound)
@@ -72,18 +66,18 @@ function Shelf(): JSX.Element {
 
   useEffect(() => {
     captureView()
-    getShelf()
+    updateShelfData()
   }, [])
 
   useEffect(() => {
     updatePageTitle()
-  }, [title])
+  }, [title.value])
 
   useEffect(() => {
-    async function getResources(): Promise<Resource[]> {
-      const retrievedResources = [] as Resource[]
+    async function getResources(): Promise<IResource[]> {
+      const retrievedResources = [] as IResource[]
       
-      for (const url of urls) {
+      for (const url of urls.value) {
         const docRef = doc(db, "resources", urlToAlphanumeric(url))
 
         await getDoc(docRef)
@@ -92,7 +86,8 @@ function Shelf(): JSX.Element {
               const data = doc.data()
 
               if (data) {
-                retrievedResources.push(data as Resource)
+                const resource = data as IResource
+                retrievedResources.push(resource)
               }
             }
           })
@@ -102,19 +97,24 @@ function Shelf(): JSX.Element {
     }
 
     getResources()
-      .then((resources) => setResources(resources))
+      .then((data) => resources.set(data))
       .catch(() => window.location.href = Endpoint.Client.PageNotFound)
-  }, [urls])
+  }, [urls.value])
 
   return (
     <Container>
-      <div style={{ textAlign: "center", marginTop: "5%" }}>
-        <h1>{ title }</h1>
-        <h4>Created by { creator }</h4>
-        <h4>{ views } views</h4>
+      <div
+        style={{
+          textAlign: "center",
+          marginTop: "5%",
+        }}
+      >
+        <h1>{ title.value }</h1>
+        <h4>Created by { creator.value }</h4>
+        <h4>{ views.value } views</h4>
       </div>
 
-      {resources.map((resource) => {
+      {resources.value.map((resource) => {
         return (
           <div
             key={resource.url}
@@ -143,7 +143,7 @@ function Shelf(): JSX.Element {
                 }}
               >
                 <li style={{ justifySelf: "center" }}>
-                  <BasicCard resource={resource} />
+                  <ShelfItem resource={resource} />
                 </li>
               </ul>
             </div>
@@ -176,70 +176,6 @@ function Shelf(): JSX.Element {
         )
       })}
     </Container>
-  )
-}
-
-interface IBasicCardProps {
-  resource: Resource
-}
-
-function BasicCard(props: IBasicCardProps) {
-  const { resource } = props
-
-  return (
-    <Card sx={{ width: 300, height: 400 }}>
-      <CardContent>
-        <Typography
-          gutterBottom
-          color="text.secondary"
-          sx={{ fontSize: 14 }}
-        >
-          {resource.siteName} <BulletPoint /> {resource.siteType}
-        </Typography>
-
-        <Typography
-          variant="h5"
-          component="div"
-          gutterBottom
-        >
-          {resource.siteTitle}
-        </Typography>
-        
-        <Typography sx={{ fontSize: 13 }}>
-          {resource.siteDescription}
-        </Typography>
-      </CardContent>
-
-      <CardActions>
-        <Button
-          size="small"
-          onClick={() => window.open(resource.url, "_blank")}
-          variant="contained"
-          sx={{
-            position: "absolute",
-            right: "10px",
-            bottom: "17.5px",
-          }}
-        >
-          Open
-        </Button>
-      </CardActions>
-    </Card>
-  )
-}
-
-function BulletPoint(): JSX.Element {
-  return (
-    <Box
-      component="span"
-      sx={{
-        display: "inline-block",
-        mx: "2px",
-        transform: "scale(0.8)",
-      }}
-    >
-      •
-    </Box>
   )
 }
 

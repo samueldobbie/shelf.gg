@@ -1,7 +1,7 @@
 import { Box, Typography, Button } from "@mui/material"
-import Endpoint from "../../commons/Endpoint"
+import Endpoint from "@shelf/commons/utils/Endpoint"
+import ShelfTable from "@shelf/components/table/ShelfTable"
 import { Link } from "react-router-dom"
-import ShelfTable from "../../components/shelf-table/ShelfTable"
 
 function Home(): JSX.Element {
   return (

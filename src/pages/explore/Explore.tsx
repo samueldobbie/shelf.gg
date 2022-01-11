@@ -1,5 +1,5 @@
 import { Container } from "@mui/material"
-import ShelfTable from "../../components/shelf-table/ShelfTable"
+import ShelfTable from "@shelf/components/table/ShelfTable"
 
 function Explore(): JSX.Element {
   return (
