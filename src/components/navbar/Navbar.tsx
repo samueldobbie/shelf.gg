@@ -6,7 +6,11 @@ import Endpoint from "commons/utils/Endpoint"
 
 function Navbar(): JSX.Element {
   return (
-    <AppBar position="sticky" color="transparent" elevation={0}>
+    <AppBar
+      position="sticky"
+      elevation={0}
+      sx={{ backgroundColor: "white" }}
+    >
       <Container disableGutters>
         <Toolbar>
           <Button
@@ -74,25 +78,25 @@ function Navbar(): JSX.Element {
           </Button>
 
           <Button
-              sx={{
-                color: "transparent",
+            sx={{
+              color: "transparent",
+              backgroundColor: "transparent",
+              marginTop: 1,
+              cursor: "default",
+              marginLeft: 2,
+              "&:hover": {
                 backgroundColor: "transparent",
-                marginTop: 1,
-                cursor: "default",
-                marginLeft: 2,
-                "&:hover": {
-                  backgroundColor: "transparent",
-                },
-              }}
+              },
+            }}
+          >
+            <GitHubButton
+              href={Endpoint.External.GitHubRepo}
+              data-size="large"
+              data-show-count="true"
             >
-              <GitHubButton
-                href={Endpoint.External.GitHubRepo}
-                data-size="large"
-                data-show-count="true"
-              >
-                Star
-              </GitHubButton>
-            </Button>
+              Star
+            </GitHubButton>
+          </Button>
         </Toolbar>
       </Container>
     </AppBar>

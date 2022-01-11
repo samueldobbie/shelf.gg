@@ -8,6 +8,7 @@ import Endpoint from "commons/utils/Endpoint"
 import { db } from "commons/utils/Firebase"
 import { urlToAlphanumeric } from "commons/utils/UrlToAlpha"
 import ShelfItem from "./ShelfItem"
+import ShelfTitle from "./ShelfTitle"
 
 function Shelf(): JSX.Element {
   const { shelfId } = useParams()
@@ -67,10 +68,14 @@ function Shelf(): JSX.Element {
   useEffect(() => {
     captureView()
     updateShelfData()
+
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [])
 
   useEffect(() => {
     updatePageTitle()
+
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [title.value])
 
   useEffect(() => {
@@ -99,82 +104,35 @@ function Shelf(): JSX.Element {
     getResources()
       .then((data) => resources.set(data))
       .catch(() => window.location.href = Endpoint.Client.PageNotFound)
+
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [urls.value])
 
   return (
     <Container>
+      <ShelfTitle
+        title={title.value}
+        creator={creator.value}
+        views={views.value}
+      />
+
       <div
         style={{
-          textAlign: "center",
+          display: "flex",
+          flexWrap: "wrap",
+          justifyContent: "center",
           marginTop: "5%",
         }}
       >
-        <h1>{ title.value }</h1>
-        <h4>Created by { creator.value }</h4>
-        <h4>{ views.value } views</h4>
+        {resources.value.map((resource) => {
+          return (
+            <ShelfItem
+              key={resource.url}
+              resource={resource}
+            />
+          )
+        })}
       </div>
-
-      {resources.value.map((resource) => {
-        return (
-          <div
-            key={resource.url}
-            style={{
-              width: "30%",
-              margin: "5rem auto",
-              textAlign: "center",
-              position: "relative",
-              display: "inline-block",
-              padding: "0 25px",
-            }}
-          >
-            <div
-              style={{
-                zIndex: "2px",
-                position: "relative",
-                transform: "translateY(-15px)",
-              }}
-            >
-              <ul
-                style={{
-                  listStyle: "none",
-                  padding: "0px",
-                  margin: "0px",
-                  display: "grid",
-                }}
-              >
-                <li style={{ justifySelf: "center" }}>
-                  <ShelfItem resource={resource} />
-                </li>
-              </ul>
-            </div>
-            <div
-              style={{
-                position: "absolute",
-                bottom: "0px",
-                left: "0px",
-                width: "100%",
-                height: "1rem",
-                borderRadius: "2px",
-                zIndex: "1px",
-                boxShadow: "0px -5px 3px 0px rgba(170, 170, 170, 0.2), 0px 15px 20px 0px rgba(170, 170, 170, 0.7), 0px 5px 5px 0px rgba(119, 119, 119, 0.3)",
-              }}
-            />
-
-            <div
-              style={{
-                position: "absolute",
-                bottom: "0px",
-                left: "0px",
-                width: "100%",
-                height: "1rem",
-                backgroundColor: "#f9f9f9",
-                borderRadius: "2px",
-                zIndex: "3",
-              }}
-            />
-          </div>            
-        )
-      })}
     </Container>
   )
 }

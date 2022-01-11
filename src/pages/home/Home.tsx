@@ -68,11 +68,23 @@ function Home(): JSX.Element {
       </Box>
 
       <Box>
-        <ShelfTable title="Most Popular" />
+        <ShelfTable
+          title="Popular Shelves"
+          sortOrder={{
+            name: "# Views",
+            direction: "desc",
+          }}
+        />
       </Box>
 
-      <Box sx={{ my: "8%" }}>
-        <ShelfTable title="Most Recent" />
+      <Box sx={{ my: "6%" }}>
+        <ShelfTable
+          title="Newest Shelves"
+          sortOrder={{
+            name: "created",
+            direction: "asc",
+          }}
+        />
       </Box>
     </div>
   )

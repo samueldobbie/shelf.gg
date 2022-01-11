@@ -1,6 +1,6 @@
 import { useState } from "@hookstate/core"
 import { CircularProgress, Container, Typography } from "@mui/material"
-import MUIDataTable from "mui-datatables"
+import MUIDataTable, { MUISortOptions } from "mui-datatables"
 import { useEffect } from "react"
 import { query, collection, getDocs } from "firebase/firestore"
 import { getDate } from "commons/utils/Date"
@@ -9,16 +9,16 @@ import { shelfTableColumns } from "./ShelfTableColumns"
 
 interface IProps {
   title: string
+  sortOrder: MUISortOptions,
 }
 
 function ShelfTable(props: IProps): JSX.Element {
-  const { title } = props
+  const { title, sortOrder } = props
  
   const load = useState(false)
   const shelves = useState([] as string[][])
 
-  const handleRowClick = (rowData: string[], rowMeta: { dataIndex: number, rowIndex: number }) => {
-    console.log(rowData)
+  const handleRowClick = (rowData: string[]) => {
     redirectToShelf(rowData[0])
   }
 
@@ -48,6 +48,8 @@ function ShelfTable(props: IProps): JSX.Element {
       })
       .then(() => shelves.set(retrievedShelves))
       .finally(() => load.set(false))
+
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [])
 
   return (
@@ -82,6 +84,7 @@ function ShelfTable(props: IProps): JSX.Element {
             download: false,
             print: false,
             elevation: 0,
+            sortOrder,
           }}
         />
       }
