@@ -14,18 +14,12 @@
     "@emotion/styled": "^11.6.0",
     "@firebase/firestore": "^3.3.1",
     "@hookstate/core": "^3.0.13",
-    "@hookstate/persistence": "^3.0.0",
     "@material-ui/icons": "^4.11.2",
     "@mui/icons-material": "^5.2.0",
     "@mui/lab": "^5.0.0-alpha.58",
     "@mui/material": "^5.1.1",
     "@mui/styles": "^5.2.3",
     "@mui/system": "^5.2.2",
-    "@mui/x-data-grid": "^5.2.2",
-    "@types/node": "^12.0.0",
-    "@types/react": "^17.0.0",
-    "@types/react-dom": "^17.0.0",
-    "@types/react-helmet": "^6.1.4",
     "firebase": "^9.5.0",
     "material-table": "^1.69.3",
     "material-ui-image": "^3.3.2",
@@ -39,9 +33,7 @@
     "react-router-dom": "^6.0.2",
     "react-scripts": "4.0.3",
     "styled-components": "^5.3.3",
-    "typescript": "^4.5.2",
-    "ultimate-text-to-image": "^1.0.0",
-    "url-metadata": "^2.5.0"
+    "typescript": "^4.5.2"
   },
   "browserslist": {
     "production": [
@@ -62,6 +54,10 @@
     ]
   },
   "devDependencies": {
+    "@types/node": "^12.0.0",
+    "@types/react": "^17.0.0",
+    "@types/react-dom": "^17.0.0",
+    "@types/react-helmet": "^6.1.4",
     "@types/mui-datatables": "^3.7.7"
   }
 }
