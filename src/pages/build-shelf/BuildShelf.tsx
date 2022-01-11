@@ -3,10 +3,10 @@ import { useState } from "@hookstate/core"
 import { LoadingButton } from "@mui/lab"
 import { useForm } from "react-hook-form"
 import { addDoc, collection, doc, getDoc, setDoc } from "firebase/firestore"
-import Endpoint from "@shelf/commons/utils/Endpoint"
-import { db } from "@shelf/commons/utils/Firebase"
-import { urlToAlphanumeric } from "@shelf/commons/utils/UrlToAlpha"
-import FormAlert, { defaultFormAlert } from "@shelf/components/form/FormAlert"
+import Endpoint from "commons/utils/Endpoint"
+import { db } from "commons/utils/Firebase"
+import { urlToAlphanumeric } from "commons/utils/UrlToAlpha"
+import FormAlert, { defaultFormAlert } from "components/form/FormAlert"
 
 interface ICreateForm {
   title: string

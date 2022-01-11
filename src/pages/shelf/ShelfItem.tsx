@@ -1,5 +1,5 @@
 import { Card, CardContent, Typography, CardActions, Button, Box } from "@mui/material"
-import { IResource } from "@shelf/commons/interfaces/IResource"
+import { IResource } from "commons/interfaces/IResource"
 
 interface IProps {
   resource: IResource
