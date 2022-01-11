@@ -1,59 +1,17 @@
 import { useState } from "@hookstate/core"
 import { CircularProgress, Container, Typography } from "@mui/material"
-import MUIDataTable, { Display } from "mui-datatables"
+import MUIDataTable from "mui-datatables"
 import { useEffect } from "react"
 import { query, collection, getDocs } from "firebase/firestore"
-import { db } from "../../commons/Firebase"
-import { getDate } from "../../commons/Date"
+import { getDate } from "@shelf/commons/utils/Date"
+import { db } from "@shelf/commons/utils/Firebase"
+import { shelfTableColumns } from "./ShelfTableColumns"
 
-const columns = [
-  {
-    name: "id",
-    label: "ID",
-    options: {
-      filter: false,
-      search: false,
-      display: 'excluded' as Display,
-    }
-  },      
-  {
-    name: "created",
-    label: "Created",
-    options: {
-      filter: false,
-      search: false,
-    }
-  },
-  {
-    name: "title",
-    label: "Title",
-    options: {
-      filter: true,
-      search: true,
-    }
-  },
-  {
-    name: "# Resources",
-    label: "# Resources",
-    options: {
-      filter: false,
-      search: false,
-    }
-  },
-  {
-    name: "# Views",
-    Label: "# Views",
-    options: {
-      filter: false,
-    }
-  },
-]
-
-interface Props {
+interface IProps {
   title: string
 }
 
-function ShelfTable(props: Props): JSX.Element {
+function ShelfTable(props: IProps): JSX.Element {
   const { title } = props
  
   const load = useState(false)
@@ -113,7 +71,7 @@ function ShelfTable(props: Props): JSX.Element {
         <MUIDataTable
           title={title}
           data={shelves.value}
-          columns={columns}
+          columns={shelfTableColumns}
           options={{
             onRowClick: handleRowClick,
             draggableColumns: {

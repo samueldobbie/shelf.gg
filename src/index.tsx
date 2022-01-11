@@ -1,15 +1,14 @@
+import { Home, Explore } from "@material-ui/icons"
 import { createTheme, CssBaseline, ThemeProvider } from "@mui/material"
 import React from "react"
 import ReactDOM from "react-dom"
 import { BrowserRouter, Route, Routes } from "react-router-dom"
-import Endpoint from "./commons/Endpoint"
-import PageTitle from "./commons/PageTitle"
+import Endpoint from "./commons/utils/Endpoint"
 import Navbar from "./components/navbar/Navbar"
+import PageTitle from "./components/page/PageTitle"
 import BuildShelf from "./pages/build-shelf/BuildShelf"
-import Explore from "./pages/explore/Explore"
 import PageNotFound from "./pages/failure/PageNotFound"
 import Faq from "./pages/faq/Faq"
-import Home from "./pages/home/Home"
 import Shelf from "./pages/shelf/Shelf"
 
 const theme = createTheme({

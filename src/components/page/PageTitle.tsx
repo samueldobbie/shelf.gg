@@ -1,10 +1,10 @@
 import { Helmet } from "react-helmet"
 
-interface Props {
+interface IProps {
   text: string
 }
 
-function PageTitle(props: Props): JSX.Element {
+function PageTitle(props: IProps): JSX.Element {
   const { text } = props
 
   return (

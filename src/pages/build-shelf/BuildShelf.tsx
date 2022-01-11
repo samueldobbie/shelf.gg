@@ -1,12 +1,12 @@
 import { Container, TextField } from "@mui/material"
 import { useState } from "@hookstate/core"
-import FormAlert, { defaultFormAlert } from "../../components/form-alert/FormAlert"
 import { LoadingButton } from "@mui/lab"
 import { useForm } from "react-hook-form"
-import { db } from "../../commons/Firebase"
 import { addDoc, collection, doc, getDoc, setDoc } from "firebase/firestore"
-import Endpoint from "../../commons/Endpoint"
-import { urlToAlphanumeric } from "../../commons/UrlToAlpha"
+import Endpoint from "@shelf/commons/utils/Endpoint"
+import { db } from "@shelf/commons/utils/Firebase"
+import { urlToAlphanumeric } from "@shelf/commons/utils/UrlToAlpha"
+import FormAlert, { defaultFormAlert } from "@shelf/components/form/FormAlert"
 
 interface ICreateForm {
   title: string

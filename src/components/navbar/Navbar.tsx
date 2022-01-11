@@ -1,10 +1,10 @@
 import { AppBar, Button, Container, Toolbar } from "@mui/material"
 import { Link } from "react-router-dom"
 import { Box } from "@mui/system"
-import Endpoint from "../../commons/Endpoint"
 import GitHubButton from "react-github-btn"
+import Endpoint from "@shelf/commons/utils/Endpoint"
 
-function Navbar() {
+function Navbar(): JSX.Element {
   return (
     <AppBar position="sticky" color="transparent" elevation={0}>
       <Container disableGutters>

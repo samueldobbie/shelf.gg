@@ -6,13 +6,13 @@ interface IAlert {
   message: string,
 }
 
-interface Props {
+interface IProps {
   alert: State<IAlert>
 }
 
 const defaultFormAlert = {} as IAlert
 
-function FormAlert(props: Props): JSX.Element {
+function FormAlert(props: IProps): JSX.Element {
   const { alert } = props
   const { type, message } = alert.value
 

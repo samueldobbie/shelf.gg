@@ -5,7 +5,7 @@ import Typography from "@mui/material/Typography"
 import ExpandMoreIcon from "@mui/icons-material/ExpandMore"
 import { Container } from "@mui/material"
 
-function Faq() {
+function Faq(): JSX.Element {
   return (
     <Container sx={{ marginTop: "5%" }}>
       <FaqItem
