@@ -2,7 +2,7 @@ import { AppBar, Button, Container, Toolbar } from "@mui/material"
 import { Link } from "react-router-dom"
 import { Box } from "@mui/system"
 import GitHubButton from "react-github-btn"
-import Endpoint from "@shelf/commons/utils/Endpoint"
+import Endpoint from "commons/utils/Endpoint"
 
 function Navbar(): JSX.Element {
   return (

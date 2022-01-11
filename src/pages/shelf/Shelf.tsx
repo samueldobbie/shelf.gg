@@ -2,12 +2,12 @@ import { useEffect } from "react"
 import { useParams } from "react-router-dom"
 import { Container } from "@mui/material"
 import { doc, getDoc, increment, setDoc } from "@firebase/firestore"
-import ShelfItem from "./ShelfItem"
-import { IResource } from "@shelf/commons/interfaces/IResource"
-import Endpoint from "@shelf/commons/utils/Endpoint"
-import { db } from "@shelf/commons/utils/Firebase"
-import { urlToAlphanumeric } from "@shelf/commons/utils/UrlToAlpha"
 import { useState } from "@hookstate/core"
+import { IResource } from "commons/interfaces/IResource"
+import Endpoint from "commons/utils/Endpoint"
+import { db } from "commons/utils/Firebase"
+import { urlToAlphanumeric } from "commons/utils/UrlToAlpha"
+import ShelfItem from "./ShelfItem"
 
 function Shelf(): JSX.Element {
   const { shelfId } = useParams()

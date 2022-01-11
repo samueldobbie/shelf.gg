@@ -3,8 +3,8 @@ import { CircularProgress, Container, Typography } from "@mui/material"
 import MUIDataTable from "mui-datatables"
 import { useEffect } from "react"
 import { query, collection, getDocs } from "firebase/firestore"
-import { getDate } from "@shelf/commons/utils/Date"
-import { db } from "@shelf/commons/utils/Firebase"
+import { getDate } from "commons/utils/Date"
+import { db } from "commons/utils/Firebase"
 import { shelfTableColumns } from "./ShelfTableColumns"
 
 interface IProps {
