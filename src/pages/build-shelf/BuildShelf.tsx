@@ -31,7 +31,7 @@ function Create(): JSX.Element {
 
     const created = Date.now()
     const title = data.title.substring(0, 50) || "Untitled"
-    const creator = data.title.substring(0, 50) || "Anonymous"
+    const creator = data.creator.substring(0, 50) || "Anonymous"
     const urls = getFilteredUrls(data.resources)
     const views = 0
 

@@ -97,7 +97,7 @@ def parse_soup_data(soup, url, site_name):
 def get_meta_or_default(soup, property, default):
     meta = soup.find("meta", property=property)
 
-    if meta is not None and meta is not "":
+    if meta is not None and meta != "":
         return meta["content"]
     else:
         return default
