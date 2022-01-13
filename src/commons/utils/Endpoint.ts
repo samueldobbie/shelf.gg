@@ -1,10 +1,11 @@
 const Client = {
+  Any: "*",
   Home: "/",
   Faq: "/faq",
   Build: "/build",
   Explore: "/explore",
   Shelf: "/s/:shelfId*",
-  PageNotFound: "*",
+  NotFound: "/404",
 }
 
 const External = {

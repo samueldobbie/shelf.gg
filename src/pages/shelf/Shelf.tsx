@@ -2,7 +2,7 @@ import { useEffect } from "react"
 import { useParams } from "react-router-dom"
 import { Container } from "@mui/material"
 import { doc, getDoc, increment, setDoc } from "@firebase/firestore"
-import { useState } from "@hookstate/core"
+import { Downgraded, useState } from "@hookstate/core"
 import { IResource } from "commons/interfaces/IResource"
 import Endpoint from "commons/utils/Endpoint"
 import { db } from "commons/utils/Firebase"
@@ -18,6 +18,9 @@ function Shelf(): JSX.Element {
   const views = useState(0)
   const urls = useState([] as string[])
   const resources = useState([] as IResource[])
+
+  const titleValue = title.value
+  const urlsValue = urls.attach(Downgraded).value
 
   const updatePageTitle = (): void => {
     document.title = `${title.value} - shelf.gg`
@@ -52,17 +55,26 @@ function Shelf(): JSX.Element {
 
       getDoc(docRef)
         .then((doc) => {
-          const data = doc.data()
-
-          if (data) {
-            title.set(data.title)
-            creator.set(data.creator)
-            views.set(data.views)
-            urls.set(data.urls)
+          if (doc.exists()) {
+            const data = doc.data()
+  
+            if (data) {
+              title.set(data.title)
+              creator.set(data.creator)
+              views.set(data.views)
+              urls.set(data.urls)
+            }
+          } else {
+            alert("Shelf doesn't exist")
+            moveTo404()
           }
         })
-        .catch(() => window.location.href = Endpoint.Client.PageNotFound)
+        .catch(() => moveTo404())
     }
+  }
+
+  const moveTo404 = (): void => {
+    window.location.href = Endpoint.Client.NotFound
   }
 
   useEffect(() => {
@@ -76,7 +88,7 @@ function Shelf(): JSX.Element {
     updatePageTitle()
 
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [title.value])
+  }, [titleValue])
 
   useEffect(() => {
     async function getResources(): Promise<IResource[]> {
@@ -103,10 +115,10 @@ function Shelf(): JSX.Element {
 
     getResources()
       .then((data) => resources.set(data))
-      .catch(() => window.location.href = Endpoint.Client.PageNotFound)
+      .catch(() => moveTo404())
 
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [urls.value])
+  }, [urlsValue])
 
   return (
     <Container>

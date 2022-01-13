@@ -15,6 +15,7 @@ def extract_meta():
     urls = data["urls"]
     result = []
 
+    # TODO run in parallel
     for url in urls:
         site_name = tldextract.extract(url).domain
         soup = get_soup(url)

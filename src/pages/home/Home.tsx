@@ -81,7 +81,7 @@ function Home(): JSX.Element {
         <ShelfTable
           title="Newest Shelves"
           sortOrder={{
-            name: "created",
+            name: "createdAt",
             direction: "asc",
           }}
         />
