@@ -15,7 +15,8 @@ def extract_meta():
     urls = data["urls"]
     result = []
 
-    # TODO run in parallel
+    # TODO run in parallel - exploration required as
+    # AWS Lambda has limited support for multiprocessing
     for url in urls:
         site_name = tldextract.extract(url).domain
         soup = get_soup(url)

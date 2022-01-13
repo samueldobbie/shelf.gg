@@ -78,19 +78,14 @@ function Create(): JSX.Element {
 
   const getFilteredUrls = (resources: string): string[] => {
     return resources
-    .split("\n")
-    .map((url) => url.trim())
-    .filter((url, index, self) => {
-      return self.indexOf(url) === index
-    })
-    .filter((url) => {
-      try {
-        new URL(url)
-        return true
-      } catch (e) {
-        return false
-      }
-    })
+      .split("\n")
+      .map((url) => url.trim())
+      .filter((url, index, self) => self.indexOf(url) === index)
+      .filter((url) => isValidUrl(url))
+  }
+
+  const isValidUrl = (url: string): boolean => {
+    return url.match(/^(http(s)?:\/\/)?(www\.)?[a-z0-9]+([-.]{1}[a-z0-9]+)*\.[a-z]{2,5}(:[0-9]{1,5})?(\/.*)?$/gm) !== null
   }
 
   const getUnseenUrls = async (urls: string[]): Promise<string[]> => {

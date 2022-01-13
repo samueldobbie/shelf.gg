@@ -6,6 +6,7 @@ import { query, collection, getDocs } from "firebase/firestore"
 import { getDate } from "commons/utils/Date"
 import { db } from "commons/utils/Firebase"
 import { shelfTableColumns } from "./ShelfTableColumns"
+import "./ShelfTable.css"
 
 interface IProps {
   title: string

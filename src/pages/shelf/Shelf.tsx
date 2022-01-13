@@ -66,15 +66,15 @@ function Shelf(): JSX.Element {
             }
           } else {
             alert("Shelf doesn't exist")
-            moveTo404()
+            returnToExplore()
           }
         })
-        .catch(() => moveTo404())
+        .catch(() => returnToExplore())
     }
   }
 
-  const moveTo404 = (): void => {
-    window.location.href = Endpoint.Client.NotFound
+  const returnToExplore = (): void => {
+    window.location.href = Endpoint.Client.Explore
   }
 
   useEffect(() => {
@@ -115,7 +115,7 @@ function Shelf(): JSX.Element {
 
     getResources()
       .then((data) => resources.set(data))
-      .catch(() => moveTo404())
+      .catch(() => returnToExplore())
 
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [urlsValue])
