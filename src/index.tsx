@@ -1,12 +1,12 @@
 import { createTheme, CssBaseline, ThemeProvider } from "@mui/material"
 import Explore from "pages/explore/Explore"
 import ReactDOM from "react-dom"
-import { BrowserRouter, Route, Routes } from "react-router-dom"
+import { BrowserRouter, Navigate, Route, Routes } from "react-router-dom"
 import Endpoint from "./commons/utils/Endpoint"
 import Navbar from "./components/navbar/Navbar"
 import PageTitle from "./components/page/PageTitle"
 import BuildShelf from "./pages/build-shelf/BuildShelf"
-import PageNotFound from "./pages/failure/PageNotFound"
+import NotFound from "./pages/failure/NotFound"
 import Faq from "./pages/faq/Faq"
 import Home from "./pages/home/Home"
 import Shelf from "./pages/shelf/Shelf"
@@ -101,12 +101,19 @@ function App(): JSX.Element {
           />
 
           <Route
-            path={Endpoint.Client.PageNotFound}
+            path={Endpoint.Client.NotFound}
             element={(
               <>
-                <PageTitle text="Page Not Found" />
-                <PageNotFound />
+                <PageTitle text="Not Found" />
+                <NotFound />
               </>
+            )}
+          />
+
+          <Route
+            path={Endpoint.Client.Any}
+            element={(
+              <Navigate to={Endpoint.Client.NotFound} />
             )}
           />
         </Routes>

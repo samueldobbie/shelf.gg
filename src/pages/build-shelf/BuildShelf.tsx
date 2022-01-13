@@ -29,7 +29,7 @@ function Create(): JSX.Element {
   const onSubmit = async (data: ICreateForm) => {
     formAlert.set(defaultFormAlert)
 
-    const created = Date.now()
+    const createdAt = Date.now()
     const title = data.title.substring(0, 50) || "Untitled"
     const creator = data.creator.substring(0, 50) || "Anonymous"
     const urls = getFilteredUrls(data.resources)
@@ -63,7 +63,7 @@ function Create(): JSX.Element {
       })
 
     await addDoc(collection(db, "shelves"), {
-      created,
+      createdAt,
       title,
       creator,
       urls,

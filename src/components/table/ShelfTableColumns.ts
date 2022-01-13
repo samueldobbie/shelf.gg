@@ -8,7 +8,7 @@ const shelfTableColumns = [
     }
   },
   {
-    name: "created",
+    name: "createdAt",
     label: "Created",
   },
   {

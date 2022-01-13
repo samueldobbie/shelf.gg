@@ -18,12 +18,19 @@ function ShelfTable(props: IProps): JSX.Element {
   const load = useState(false)
   const shelves = useState([] as string[][])
 
-  const handleRowClick = (rowData: string[]) => {
-    redirectToShelf(rowData[0])
+  const handleRowClick = (rowData: string[]): void => {
+    const shelfId = rowData[0]
+    window.open(`${window.location.origin}/s/${shelfId}`)
   }
 
-  const redirectToShelf = (shelfId: string) => {
-    window.open(`${window.location.origin}/s/${shelfId}`)
+  const isValidShelf = (data: any): Boolean => {
+    return (
+      data.title &&
+      data.creator && 
+      data.urls &&
+      data.views &&
+      data.createdAt
+    )
   }
 
   useEffect(() => {
@@ -37,13 +44,19 @@ function ShelfTable(props: IProps): JSX.Element {
         docs.forEach((doc) => {
           const data = doc.data()
 
-          retrievedShelves.push([
-            doc.id,
-            getDate(data.created),
-            data.title,
-            data.urls.length,
-            data.views,
-          ])
+          if (isValidShelf(data)) {
+            const shelfId = doc.id
+            const date = getDate(data.createdAt)
+            const resourceCount = data.urls.length
+
+            retrievedShelves.push([
+              shelfId,
+              date,
+              data.title,
+              resourceCount,
+              data.views,
+            ])
+          }
         })
       })
       .then(() => shelves.set(retrievedShelves))
