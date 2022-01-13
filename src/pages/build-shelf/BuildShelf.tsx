@@ -30,8 +30,8 @@ function Create(): JSX.Element {
     formAlert.set(defaultFormAlert)
 
     const created = Date.now()
-    const title = data.title || "Untitled"
-    const creator = data.creator || "Anonymous"
+    const title = data.title.substring(0, 50) || "Untitled"
+    const creator = data.title.substring(0, 50) || "Anonymous"
     const urls = getFilteredUrls(data.resources)
     const views = 0
 
@@ -99,8 +99,6 @@ function Create(): JSX.Element {
     for (const url of urls) {
       const docRef = doc(db, "resources", urlToAlphanumeric(url))
       
-      console.log(docRef)
-
       await getDoc(docRef)
         .then((doc) => {
           if (doc.exists()) {

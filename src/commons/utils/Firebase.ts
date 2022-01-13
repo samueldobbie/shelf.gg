@@ -2,12 +2,12 @@ import { initializeApp } from "firebase/app"
 import { getFirestore, connectFirestoreEmulator } from "firebase/firestore"
 
 const firebaseConfig = {
-  apiKey: process.env.REACT_APP_FIREBASE_API_KEY,
-  authDomain: process.env.REACT_APP_FIREBASE_AUTH_DOMAIN,
-  projectId: process.env.REACT_APP_FIREBASE_PROJECT_ID,
-  appId: process.env.REACT_APP_FIREBASE_APP_ID,
+  apiKey: "AIzaSyDo4HDKDpkXlAlQovTYvIPekhizZUn3o8Y",
+  authDomain: "shelf-gg.firebaseapp.com",
+  projectId: "shelf-gg",
+  appId: "1:404360518247:web:fdc51154b5d10ce84892c2",
 }
-  
+
 const firebase = initializeApp(firebaseConfig);
 const db = getFirestore(firebase)
 
