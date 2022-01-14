@@ -45,7 +45,7 @@ function Create(): JSX.Element {
     }
 
     const unseenUrls = await getUnseenUrls(urls)
-    const urlsToAdd = unseenUrls.slice(0, 10)
+    const urlsToAdd = unseenUrls.slice(0, 25)
 
     // TODO use urlMetadata package
     await fetch(Endpoint.Server.ExtractMetaData, {
@@ -152,7 +152,7 @@ function Create(): JSX.Element {
           variant="outlined"
           margin="normal"
           type="text"
-          label="URLs (Max 10)"
+          label="URLs (Max 25)"
           placeholder="e.g. https://www.youtube.com/watch?v=dQw4w9WgXcQ"
           error={!!errors.resources}
           helperText={errors.resources && errors.resources.message}

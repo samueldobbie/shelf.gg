@@ -3,8 +3,8 @@ from flask_cors import CORS
 from bs4 import BeautifulSoup
 from fake_useragent import UserAgent
 
-import urllib.request
 import tldextract
+import requests
 
 app = Flask(__name__)
 CORS(app)
@@ -40,9 +40,8 @@ def extract_meta():
 def get_soup(url):
     try:
         headers = { "User-Agent": user_agent.random }
-        http_request = urllib.request.Request(url, headers=headers)
-        http_response = urllib.request.urlopen(http_request, timeout=5)
-        return BeautifulSoup(http_response)
+        request = requests.get(url, headers=headers, timeout=5)
+        return BeautifulSoup(request.text)
     except:
         return None
 
