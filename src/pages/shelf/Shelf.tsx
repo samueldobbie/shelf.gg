@@ -9,10 +9,12 @@ import { db } from "commons/utils/Firebase"
 import { urlToAlphanumeric } from "commons/utils/UrlToAlpha"
 import ShelfItem from "./ShelfItem"
 import ShelfTitle from "./ShelfTitle"
+import Loader from "components/loader/Loader"
 
 function Shelf(): JSX.Element {
   const { shelfId } = useParams()
 
+  const load = useState(false)
   const title = useState("")
   const creator = useState("")
   const views = useState(0)
@@ -70,6 +72,8 @@ function Shelf(): JSX.Element {
           }
         })
         .catch(() => returnToExplore())
+    } else {
+      returnToExplore()
     }
   }
 
@@ -91,6 +95,8 @@ function Shelf(): JSX.Element {
   }, [titleValue])
 
   useEffect(() => {
+    load.set(true)
+
     async function getResources(): Promise<IResource[]> {
       const retrievedResources = [] as IResource[]
       
@@ -116,35 +122,44 @@ function Shelf(): JSX.Element {
     getResources()
       .then((data) => resources.set(data))
       .catch(() => returnToExplore())
+      .finally(() => load.set(false))
 
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [urlsValue])
 
   return (
     <Container>
-      <ShelfTitle
-        title={title.value}
-        creator={creator.value}
-        views={views.value}
-      />
+      {load.value &&
+        <Loader message="Loading shelf..." />
+      }
 
-      <div
-        style={{
-          display: "flex",
-          flexWrap: "wrap",
-          justifyContent: "center",
-          marginTop: "5%",
-        }}
-      >
-        {resources.value.map((resource) => {
-          return (
-            <ShelfItem
-              key={resource.url}
-              resource={resource}
-            />
-          )
-        })}
-      </div>
+      {!load.value &&
+        <>
+          <ShelfTitle
+            title={title.value}
+            creator={creator.value}
+            views={views.value}
+          />
+
+          <div
+            style={{
+              display: "flex",
+              flexWrap: "wrap",
+              justifyContent: "center",
+              marginTop: "5%",
+            }}
+          >
+            {resources.value.map((resource) => {
+              return (
+                <ShelfItem
+                  key={resource.url}
+                  resource={resource}
+                />
+              )
+            })}
+          </div>
+        </>
+      }
     </Container>
   )
 }

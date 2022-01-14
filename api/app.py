@@ -61,7 +61,10 @@ def get_default_data(url, site_name):
     }
 
 def parse_soup_data(soup, url, site_name):
-    site_title = soup.title.string
+    site_title = url
+
+    if soup.title is not None and soup.title.string != "":
+        site_title = soup.title.string
 
     site_name = get_meta_or_default(
         soup=soup,

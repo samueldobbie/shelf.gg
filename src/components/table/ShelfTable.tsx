@@ -1,11 +1,12 @@
 import { useState } from "@hookstate/core"
-import { CircularProgress, Container, Typography } from "@mui/material"
+import { Container } from "@mui/material"
 import MUIDataTable, { MUISortOptions } from "mui-datatables"
 import { useEffect } from "react"
 import { query, collection, getDocs } from "firebase/firestore"
 import { getDate } from "commons/utils/Date"
 import { db } from "commons/utils/Firebase"
 import { shelfTableColumns } from "./ShelfTableColumns"
+import Loader from "components/loader/Loader"
 import "./ShelfTable.css"
 
 interface IProps {
@@ -69,18 +70,7 @@ function ShelfTable(props: IProps): JSX.Element {
   return (
     <Container>
       {load.value &&
-        <div
-          style={{
-            textAlign: "center",
-            marginTop: "15%",
-          }}
-        >
-          <CircularProgress />
-          
-          <Typography>
-            Loading shelves...
-          </Typography>
-        </div>
+        <Loader message="Loading shelves..." />
       }
 
       {!load.value &&

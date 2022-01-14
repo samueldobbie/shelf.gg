@@ -45,11 +45,12 @@ function Create(): JSX.Element {
     }
 
     const unseenUrls = await getUnseenUrls(urls)
+    const urlsToAdd = unseenUrls.slice(0, 10)
 
     // TODO use urlMetadata package
     await fetch(Endpoint.Server.ExtractMetaData, {
       method: "POST",
-      body: JSON.stringify({ urls: unseenUrls }),
+      body: JSON.stringify({ urls: urlsToAdd }),
     })
       .then((response) => response.json())
       .then(async (data) => {
@@ -151,7 +152,7 @@ function Create(): JSX.Element {
           variant="outlined"
           margin="normal"
           type="text"
-          label="URLs (Max 50)"
+          label="URLs (Max 10)"
           placeholder="e.g. https://www.youtube.com/watch?v=dQw4w9WgXcQ"
           error={!!errors.resources}
           helperText={errors.resources && errors.resources.message}
